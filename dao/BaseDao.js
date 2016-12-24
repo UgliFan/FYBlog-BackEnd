@@ -1,53 +1,96 @@
+var Promise = require('es6-promise').Promise;
+
 function DaoBase(Model) {
   this.model = Model;
 }
 
-DaoBase.prototype.create = function(doc, callback) {
-  this.model.create(doc, function(error) {
-    if (error) return callback(error);
-    return callback(doc);
+DaoBase.prototype.create = function(doc) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.create(doc, function(error) {
+      if (error) reject(error);
+      else resolve(doc);
+    });
   });
 };
 
-DaoBase.prototype.getById = function(id, callback) {
-  this.model.findOne({ _id: id }, function(error, model) {
-    if (error) return callback(error, null);
-    return callback(null, model);
+DaoBase.prototype.save = function(params) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.save(params, function(error) {
+      if (error) reject(error);
+      else resolve(params);
+    });
   });
 };
 
-DaoBase.prototype.countByQuery = function(query, callback) {
-  this.model.count(query, function(error, model) {
-    if (error) return callback(error, null);
-    return callback(null, model);
+DaoBase.prototype.getById = function(id) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.findOne({ _id: id }, function(error, model) {
+      if (error) reject(error);
+      else resolve(model);
+    });
   });
 };
 
-DaoBase.prototype.getByQuery = function(query, fields, opt, callback) {
-  this.model.find(query, fields, opt, function(error, model) {
-    if (error) return callback(error, null);
-    return callback(null, model);
+DaoBase.prototype.getByAnything = function(anything) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.findOne(anything, function(error, model) {
+      if (error) reject(error);
+      else resolve(model);
+    });
   });
 };
 
-DaoBase.prototype.getAll = function(callback) {
-  this.model.find({}, function(error, model) {
-    if (error) return callback(error, null);
-    return callback(null, model);
+DaoBase.prototype.countByQuery = function(query) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.count(query, function(error, model) {
+      if (error) reject(error);
+      else resolve(model);
+    });
   });
 };
 
-DaoBase.prototype.delete = function(query, callback) {
-  this.model.remove(query, function(error) {
-    if (error) return callback(error);
-    return callback(null);
+DaoBase.prototype.getByQuery = function(query, fields, opt) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.find(query, fields, opt, function(error, model) {
+      if (error) reject(error);
+      else resolve(model);
+    });
   });
 };
 
-DaoBase.prototype.update = function(conditions, update, opts, callback) {
-  this.model.update(conditions, update, opts, function(error) {
-    if (error) return callback(error);
-    return callback(null);
+DaoBase.prototype.getAll = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.find({}, function(error, models) {
+      if (error) reject(error);
+      else resolve(models);
+    });
+  });
+};
+
+DaoBase.prototype.delete = function(query) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.remove(query, function(error) {
+      if (error) reject(error);
+      else resolve(null);
+    });
+  });
+};
+
+DaoBase.prototype.update = function(conditions, update, opts) {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.model.update(conditions, update, opts, function(error) {
+      if (error) reject(error);
+      else resolve(null);
+    });
   });
 };
 

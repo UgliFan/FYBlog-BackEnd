@@ -10,7 +10,8 @@ var schema = new mongoose.Schema({
   hash_pass: String,
   groupId: Number,
   active: Boolean,
-  createAt: Number
+  createAt: Number,
+  updateAt: Number
 });
 
 function encryptPassword(password) {

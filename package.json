@@ -2,10 +2,10 @@
   "name": "fyblog-back-end",
   "version": "1.0.0",
   "description": "api,management for fyblog",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "node app.js",
-    "server": "forever start app.js"
+    "dev": "node server.js",
+    "server": "forever start server.js"
   },
   "repository": {
     "type": "git",
