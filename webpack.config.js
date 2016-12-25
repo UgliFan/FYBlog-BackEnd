@@ -6,27 +6,17 @@ var HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html
 var ROOT_PATH = path.resolve(__dirname),
     APP_PATH = path.resolve(ROOT_PATH, 'src'),
     APP_FILE = path.resolve(APP_PATH, 'app'),
-    BUILD_PATH = path.resolve(ROOT_PATH, 'build');
+    BUILD_PATH = path.resolve(ROOT_PATH, 'static');
 
 module.exports = {
   entry: {
-    main: APP_FILE,
-    common: [
-      'react',
-      'react-dom',
-      'react-router',
-      'redux',
-      'react-redux',
-      'redux-thunk',
-      'immutable'
-    ]
+    main: APP_FILE
   },
   output: {
     path: BUILD_PATH,
-    publicPath: '/static/',
-    filename: '[name].js',
-    sourceMapFilename: '[file].map',
-    chunkFilename: '[name].[chunkhash:5].min.js'
+    publicPath: '/',
+    filename: 'js/[name].js?v=[hash:6]',
+    sourceMapFilename: '[file].map'
   },
   devtool: '#source-map',
   module: {
@@ -34,7 +24,7 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: /^node_modules$/,
-      loader: 'babel?presets=es2015&plugins=transform-runtime'
+      loader: 'babel?presets=es2015'
     }, {
       test: /\.css$/,
       exclude: /^node_modules$/,
@@ -59,13 +49,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({  //根据模板插入css/js等生成最终HTML
-      filename: './views/index.html', //生成的html存放路径
+      filename: '../views/index.html', //生成的html存放路径
       template: './src/Templates/index.html', //html模板路径
       inject: 'body',
       hash: false
     }),
-    new ExtractTextPlugin('[name].css'),
-    new webpack.optimize.CommonsChunkPlugin("common", "common.bundle.js"),
+    new ExtractTextPlugin('css/core.css'),
+    // new webpack.optimize.CommonsChunkPlugin("common", "js/common.bundle.js"),
     new webpack.optimize.UglifyJsPlugin({
       output: { comments: false },
       compress: { warnings: false },
@@ -75,6 +65,6 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx', '.less', '.scss', '.css'] //后缀名自动补全
+    extensions: ['', '.js', '.jsx', '.scss', '.css'] //后缀名自动补全
   }
 };
