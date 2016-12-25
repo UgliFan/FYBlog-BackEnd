@@ -24,7 +24,7 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: /^node_modules$/,
-      loader: 'babel?presets=es2015'
+      loader: 'babel?presets=es2015&compact=false'
     }, {
       test: /\.css$/,
       exclude: /^node_modules$/,
