@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var BlogDao = require('../dao/BlogDao');
+var BlogDao = require('../dao/BlogsDao');
 
 router.get('/page', function(req, res, next) {
   var sortParams = { top: -1 },
@@ -16,7 +16,7 @@ router.get('/page', function(req, res, next) {
   if (req.query.status) queryParams.status = req.query.status;
   BlogDao.page(queryParams, sortParams, pageNum, pageSize).then(function(blogs) {
     res.status(200).json({ code: 0, result: blogs });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -25,7 +25,7 @@ router.get('/get/:id', function(req, res, next) {
   var _id = req.params.id;
   BlogDao.getById(_id).then(function(blog) {
     res.status(200).json({ code: 0, result: blog });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -44,7 +44,7 @@ router.post('/new', function(req, res, next) {
   params.isOff = false;
   BlogDao.save(params).then(function() {
     res.status(200).json({ code: 0, msg: '保存成功'});
-  }).fail(function(error) {
+  }).catch(function(error) {
     next();
   });
 });
@@ -60,7 +60,7 @@ router.post('/set', function(req, res, next) {
     $set: params
   }, {}).then(function() {
     res.status(200).json({ code: 0, msg: '更新成功' });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -72,7 +72,7 @@ router.post('/up/:id', function(req, res, next) {
     $set: { top: true }
   }, {}).then(function() {
     res.status(200).json({ code: 0, msg: '置顶成功' });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -85,7 +85,7 @@ router.post('/off/:id', function(req, res, next) {
     $set: { isOff: true }
   }, {}).then(function() {
     res.status(200).json({ code: 0, msg: '下架成功' });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -94,7 +94,7 @@ router.post('/remove/:id', function(req, res, next) {
   var _id = req.params.id;
   BlogDao.delete(_id).then(function() {
     res.status(200).json({ code: 0, msg: '删除成功'});
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });

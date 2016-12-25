@@ -4,20 +4,10 @@ function DaoBase(Model) {
   this.model = Model;
 }
 
-DaoBase.prototype.create = function(doc) {
-  var self = this;
-  return new Promise(function(resolve, reject) {
-    self.model.create(doc, function(error) {
-      if (error) reject(error);
-      else resolve(doc);
-    });
-  });
-};
-
 DaoBase.prototype.save = function(params) {
   var self = this;
   return new Promise(function(resolve, reject) {
-    self.model.save(params, function(error) {
+    self.model.create(params, function(error) {
       if (error) reject(error);
       else resolve(params);
     });

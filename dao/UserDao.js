@@ -5,7 +5,7 @@ var Promise = require('es6-promise').Promise;
 BaseDao.prototype.getUserInfo = function(userName) {
   var self = this;
   return new Promise(function(resolve, reject) {
-    self.model.or([{ email: userName }, { tel: userName }]).exec(function(error, models) {
+    self.model.find().or([{ email: userName }, { tel: userName }]).exec(function(error, models) {
       if (error) reject(error);
       else resolve(models);
     });
@@ -15,7 +15,7 @@ BaseDao.prototype.getUserInfo = function(userName) {
 BaseDao.prototype.checkExist = function(info) {
   var self = this;
   return new Promise(function(resolve, reject) {
-    self.model.or([{ email: info.email }, { tel: info.tel }]).exec(function(error, models) {
+    self.model.find().or([{ email: info.email }, { tel: info.tel }]).exec(function(error, models) {
       if (error) reject(error);
       else resolve(models);
     });

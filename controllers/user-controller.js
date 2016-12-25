@@ -14,24 +14,25 @@ router.post('/login', function(req, res, next) {
       maxAge: config.expire_time
     });
     res.status(200).json({ code: 0, result: users[0] });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
-  });
+  }).done();
 });
 
 router.post('/register', function(req, res, next) {
+  console.log(req.body);
   req.body.groupId = 1; // 强制注册用户为普通用户
   req.body.updateAt = req.body.createAt = new Date().getTime();
   req.body.active = true;
   UserDao.checkExist(req.body).then(function(users) {
     if (users && users.length > 0) res.status(200).json({ code: -103, msg: '用户已存在' });
-    // TODO test .create
     UserDao.save(req.body).then(function(user) {
       res.status(200).json({ code: 0, msg: '保存成功' });
-    }).fail(function(error) {
+    }).catch(function(error) {
       res.status(200).json({ code: -200, msg: '保存失败', extraMsg: error });
     });
-  }).fail(function(error) {
+  }).catch(function(error) {
+    console.log('checkExist fail');
     next(error);
   });
 });
@@ -41,10 +42,10 @@ router.post('/reset', function(req, res, next) {
     if (!users || users.length < 1) res.status(200).json({ code: -100, msg: '当前用户不存在' });
     UserDao.resetPass(req.body).then(function() {
       res.status(200).json({ code: 0, msg: '重置成功' });
-    }).fail(function(error) {
+    }).catch(function(error) {
       res.status(200).json({ code: -200, msg: '重置失败', extraMsg: error });
     });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });
@@ -52,7 +53,7 @@ router.post('/reset', function(req, res, next) {
 router.get('/list', function(req, res, next) {
   UserDao.getAll().then(function(users) {
     res.status(200).json({ code: 0, result: users });
-  }).fail(function(error) {
+  }).catch(function(error) {
     next(error);
   });
 });

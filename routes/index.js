@@ -1,7 +1,8 @@
 var router = require('express').Router();
 var filters = require('../filters');
 
-router.get('', filter.refreshUser, filter.authorize, function(req, res, next) {
+router.get('/', filters.refreshUser, filters.authorize, function(req, res, next) {
+  console.log('router /');
   res.render('index');
 });
 

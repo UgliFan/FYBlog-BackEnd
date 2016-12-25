@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var fs = require('fs');
+var engines = require('consolidate');
 
 var config = require('./config');
 
@@ -13,9 +14,10 @@ global.__rootPath = __dirname;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.engine('html', engines.mustache);
 app.set('view engine', 'html');
 
-app.use(express.favicon());
+//app.use(express.favicon());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -39,7 +41,7 @@ app.use(function(req, res, next) {
 // 加载controllers目录下的接口
 var ctrlFileNames = fs.readdirSync('controllers');
 for (var i in ctrlFileNames) {
-  if (ctrlFileNames[i] === '.DS_Store') {
+  if (ctrlFileNames[i] === '.DS_Store' || ctrlFileNames[i] === 'config.txt') {
     continue;
   }
   var ctrlFileName = ctrlFileNames[i];
@@ -63,6 +65,7 @@ app.use(function(req, res, next) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
+  console.log('app error');
   res.render('error', {
     message: err.message,
     error: {}
