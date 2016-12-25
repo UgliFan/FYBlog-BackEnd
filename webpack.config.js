@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html
 
 var ROOT_PATH = path.resolve(__dirname),
     APP_PATH = path.resolve(ROOT_PATH, 'src'),
-    APP_FILE = path.resolve(APP_PATH, 'app'),
+    APP_FILE = path.resolve(APP_PATH, 'App.jsx'),
     BUILD_PATH = path.resolve(ROOT_PATH, 'static');
 
 module.exports = {
