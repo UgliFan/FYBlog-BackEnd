@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var config = require('../config');
 var fs = require('fs');
 
+mongoose.Promise = require('es6-promise').Promise;
+
 // 创建连接
 var conn = mongoose.createConnection(config.db.server, config.db.options);
 
