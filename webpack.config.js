@@ -10,7 +10,7 @@ var ROOT_PATH = path.resolve(__dirname),
 
 module.exports = {
   entry: {
-    main: APP_FILE
+    bundle: APP_FILE
   },
   output: {
     path: BUILD_PATH,
@@ -54,7 +54,7 @@ module.exports = {
       inject: 'body',
       hash: false
     }),
-    new ExtractTextPlugin('css/core.css'),
+    new ExtractTextPlugin('css/[name].css'),
     // new webpack.optimize.CommonsChunkPlugin("common", "js/common.bundle.js"),
     new webpack.optimize.UglifyJsPlugin({
       output: { comments: false },
