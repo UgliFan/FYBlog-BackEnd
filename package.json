@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "export NODE_ENV=dev;node server.js",
     "server-start": "export NODE_ENV=pro;forever start server.js",
-    "server-end": "forever stop server.js"
+    "server-stop": "forever stop server.js"
   },
   "repository": {
     "type": "git",
