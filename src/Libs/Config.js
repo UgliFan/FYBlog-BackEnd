@@ -29,6 +29,6 @@ const system = (() => {
   return system;
 })();
 
-const target = process.env.NODE_ENV !== 'production' ? '' : 'http://back.fyq2yj.cn'; //目标网站
+const target = process.env.NODE_ENV !== 'production' ? '' : 'http://api.fyq2yj.cn'; //目标网站
 
 exports { target, system }

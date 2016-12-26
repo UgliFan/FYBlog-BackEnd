@@ -1,5 +1,6 @@
 var config = require('../config').account;
 var UserDao = require('../dao/UserDao');
+var jwt = require('jwt-simple');
 
 exports.refreshUser = function(req, res, next){
   if (req.session.user && req.session.user._id) {
@@ -14,7 +15,7 @@ exports.refreshUser = function(req, res, next){
   }
 };
 
-var checkUid = function(req,res) {
+var checkUid = function(req, res) {
   var uid = req.cookies[config.access_token_name_cookie];
   if (uid) {
     return uid === req.session.user._id.toString();
@@ -33,4 +34,15 @@ exports.authorize = function(req, res, next) {
     var pathName = req.originalUrl;
     res.redirect('/login?rdt=' + encodeURIComponent(pathName));
   }
+};
+
+exports.accessToken = function(req, res, next) {
+  var token = req.body.token || req.query.token;
+  req.params.aaccessToken = false;
+  if (token) {
+    if (req.session.accessToken === jwt.decode(token, config.secret_key).foo) {
+      req.params.accessToken = true;
+    }
+  }
+  next();
 };
