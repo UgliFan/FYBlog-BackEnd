@@ -13,7 +13,6 @@ var checkUid = function(req, res) {
 };
 
 router.get('token', function(req, res, next) {
-  console.log(req.session.accessToken);
   if (req.session.accessToken && checkUid(req, res)) {
     var token = jwt.encode({
       foo: req.session.accessToken
