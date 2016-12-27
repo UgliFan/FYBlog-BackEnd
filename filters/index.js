@@ -7,7 +7,7 @@ exports.refreshUser = function(req, res, next){
     UserDao.getById(req.session.accessToken).then(function(user) {
       req.session.user = user;
       next();
-    }).fail(function(error) {
+    }).catch(function(error) {
       next(error);
     });
   } else {

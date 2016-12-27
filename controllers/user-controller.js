@@ -14,10 +14,10 @@ router.post('/login', function(req, res, next) {
     res.cookie(config.access_token_name_cookie, users[0]._id, {
       maxAge: config.expire_time
     });
-    res.status(200).json({ code: 0, result: users[0] });
+    res.status(200).json({ code: 0, msg: '登录成功' });
   }).catch(function(error) {
     next(error);
-  }).done();
+  });
 });
 
 router.post('/register', function(req, res, next) {
