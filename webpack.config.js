@@ -28,11 +28,11 @@ module.exports = {
     }, {
       test: /\.css$/,
       exclude: /^node_modules$/,
-      loader: ExtractTextPlugin.extract('style', ['css', 'postcss'])
+      loader: ExtractTextPlugin.extract('style', ['css', 'autoprefixer'])
     }, {
       test: /\.scss$/,
       exclude: /^node_modules$/,
-      loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'sass'])
+      loader: ExtractTextPlugin.extract('style', ['css', 'autoprefixer', 'sass'])
     }, {
       test: /\.(eot|woff|svg|ttf|woff2|gif|appcache)(\?|$)/,
       exclude: /^node_modules$/,

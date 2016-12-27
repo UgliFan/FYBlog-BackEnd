@@ -31,4 +31,4 @@ const system = (() => {
 
 const target = process.env.NODE_ENV !== 'production' ? '' : 'http://api.fyq2yj.cn'; //目标网站
 
-exports { target, system }
+export { target, system }

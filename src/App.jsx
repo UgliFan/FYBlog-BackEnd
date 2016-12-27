@@ -3,7 +3,7 @@ import ReactDOM, {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import route from './Router/Route' //路由配置
 import store from './Redux/Store/Store'
-import './Config/Config'//引入默认配置
+import './Libs/Config'//引入默认配置
 // 引入样式
 import './Styles/common.scss'
 
