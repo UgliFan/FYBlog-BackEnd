@@ -7,9 +7,62 @@
     <meta name="keywords" content="FYBlog" />
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="/css/core.css">
   </head>
   <body>
-    <div></div>
+    <div>
+      <div><input type="text" class="user-name" placeholder="邮箱、手机号"></div>
+      <div><input type="password" class="password" placeholder="密码"></div>
+      <div><button>提交</button></div>
+    </div>
+    <script>
+      var rdt = {{rdt}};
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('readystatechange', httpEnd, false);
+      xhr.end = function() {
+        xhr.removeEventListener('readystatechange', httpEnd, false);
+      };
+      var httpEnd = function(xhr, params) {
+        if (xhr.readyState === 4) {
+          var head = xhr.getAllResponseHeaders();
+          var response = xhr.responseText;
+          // 转化成json
+          if (/^(\{|\[)([\s\S])*?(\]|\})$/.test(response)) {
+            response = JSON.parse(response);
+          }
+          if (xhr.status == 200) {
+            if (response.code === 0) {
+              window.location.href = rdt;
+            } else {
+              console.log(response.msg);
+            }
+          } else {
+            // ajax失败
+            console.log('网络错误，请稍后重试');
+          }
+        }
+      };
+      var handler = function(event) {
+        var userName = document.querySelector('.user-name').value;
+        var password = document.querySelector('.password').value;
+        if (userName && password) {
+          try {
+            xhr.open('POST', '/user/login', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send('name=' + userName + '&password=' + password);
+          } catch (e) {
+            httpEnd(xhr, params);
+          }
+        } else {
+          console.log('用户名密码不能为空');
+        }
+      };
+
+      document.querySelector('button').addEventListener('click', handler, false);
+      document.querySelector('.password').addEventListener('keyup', function(event) {
+        if(event.keyCode === 13) {
+          handler(event);
+        }
+      }, false);
+    </script>
   </body>
 </html>
