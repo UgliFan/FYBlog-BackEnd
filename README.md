@@ -22,8 +22,7 @@ npm run server-stop
 
 ## P.S.
 >Hope to discuss with you in issues.
+NOT FINISHED
 
 ## License
 MIT
-
-
