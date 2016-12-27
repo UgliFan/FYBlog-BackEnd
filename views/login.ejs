@@ -15,13 +15,9 @@
       <div><button>提交</button></div>
     </div>
     <script>
-      var rdt = {{rdt}};
+      var rdt = '<%= rdt %>';
       var xhr = new XMLHttpRequest();
-      xhr.addEventListener('readystatechange', httpEnd, false);
-      xhr.end = function() {
-        xhr.removeEventListener('readystatechange', httpEnd, false);
-      };
-      var httpEnd = function(xhr, params) {
+      var httpEnd = function(xhr) {
         if (xhr.readyState === 4) {
           var head = xhr.getAllResponseHeaders();
           var response = xhr.responseText;
@@ -50,12 +46,15 @@
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send('name=' + userName + '&password=' + password);
           } catch (e) {
-            httpEnd(xhr, params);
+            httpEnd(xhr);
           }
         } else {
           console.log('用户名密码不能为空');
         }
       };
+      xhr.addEventListener('readystatechange', function(xhr) {
+        httpEnd(this);
+      }, false);
 
       document.querySelector('button').addEventListener('click', handler, false);
       document.querySelector('.password').addEventListener('keyup', function(event) {

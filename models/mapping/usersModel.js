@@ -20,7 +20,7 @@ function encryptPassword(password) {
   return md5sum.digest('hex').toUpperCase();
 }
 
-schema.virtual('pass').set(function(password) {
+schema.virtual('password').set(function(password) {
   this.hash_pass = encryptPassword(password);
 });
 

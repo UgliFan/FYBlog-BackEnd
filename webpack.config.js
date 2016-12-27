@@ -49,7 +49,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({  //根据模板插入css/js等生成最终HTML
-      filename: '../views/index.html', //生成的html存放路径
+      filename: '../views/index.ejs', //生成的html存放路径
       template: './src/Templates/index.html', //html模板路径
       inject: 'body',
       hash: false
