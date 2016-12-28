@@ -1,0 +1,75 @@
+* { 
+  box-sizing: border-box;
+  outline: 0;
+}
+html {
+  height: 100%;
+}
+html, body {
+  color: #222;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-height: 100%;
+}
+h1,h2,h3,h4 {
+  margin: 0;
+  padding:0;
+  font-size: 30px;
+}
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #fff;
+  border: 0;
+  border-radius: 6px;
+  color: #039be5;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  transition: background-color .2s, box-shadow .2s;
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 20px;
+  height: 36px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+  font-size: 14px;
+  font-weight: 500;
+}
+.btn.btn-sm {
+  height: 24px;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 12px;
+}
+.btn.btn-lg {
+  height: 48px;
+  padding: 12px 24px;
+  font-size: 24px;
+  line-height: 24px;
+}
+.btn:focus, .btn:hover {
+  background-color: #e1f3fc;
+}
+.btn:active {
+  background-color: #c3e7f9;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,.38);
+}
+.btn.guide {
+  color: #fff;
+  background: #039be5;
+}
+.btn.guide:focus, .btn.guide:hover {
+  background-color: #00acff;
+}
+.btn.guide:active {
+  background-color: #038dd0;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,.38);
+}
+
+.block {
+  margin-bottom: 20px;
+}

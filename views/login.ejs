@@ -1,18 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>阴吹思婷~ - FYBlog</title>
+    <meta charset="utf-8">
+    <title>登录 - FYBlog</title>
     <meta name="description" content="FYBlog, Based on React" />
     <meta name="keywords" content="FYBlog" />
-    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/assets/iconfont/iconfont.css">
+    <link rel="stylesheet" href="/assets/animelogo/index.css">
+    <link rel="stylesheet" href="/css/common/common.css">
+    <style>
+      body {
+        height: 100%;
+      }
+      .header {
+        background: #3367d6;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        height: 60px;
+        padding: 18px 12px;
+        color: #fff;
+        font-size: 14px;
+        line-height: 24px;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+      }
+      .header h1 {
+        padding: 0 12px;
+        display: inline;
+        font-size: 24px;
+        line-height: 24px;
+      }
+      .msg {
+        position: absolute;
+        padding: 0 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        top: 360px;
+        height: 24px;
+        line-height: 24px;
+        width: 100%;
+        text-align: center;
+        color: #ec9200;
+      }
+      .login-container {
+        position: relative;
+        max-width: 320px;
+        margin: 0 auto;
+        padding: 80px 30px 30px;
+        text-align: center;
+      }
+      label {
+        display: block;
+        text-align: left;
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 700;
+        height: 30px;
+        padding: 5px 0;
+        margin-bottom: 10px;
+      }
+      input {
+        width: 100%;
+        height: 40px;
+        padding: 10px 16px;
+        line-height: 20px;
+        font-size: 20px;
+        border: none;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+        outline: 0;
+      }
+      .login {
+        margin-left: 20px;
+      }
+    </style>
   </head>
   <body>
-    <div>
-      <div><input type="text" class="user-name" placeholder="邮箱、手机号"></div>
-      <div><input type="password" class="password" placeholder="密码"></div>
-      <div><button>提交</button></div>
+    <div class="header"><h1>FYBlog</h1> ( Management Tool )</div>
+    <div class="msg"><%= msg %></div>
+    <div class="login-container">
+      <div class="block">
+        <label for="username"><i class="iconfont icon-people"></i> 用户名</label>
+        <input type="text" autocomplete="off" class="user-name" id="username" placeholder="邮箱、手机号">
+      </div>
+      <div class="block">
+        <label for="password"><i class="iconfont icon-lock"></i> 密码</label>
+        <input type="password" autocomplete="off" class="password" id="password" placeholder="密码">
+      </div>
+      <div class="block">
+        <button class="btn btn-lg">注册</button>
+        <button class="btn btn-lg guide login">登录</button>
+      </div>
+    </div>
+    <div class="lflogo-container">
+      <div class="ball"><div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="ball"><div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="ball"><div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="ball"> <div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="ball"><div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="ball"><div class="edge"><div class="inner-edge"></div></div></div>
+      <div class="round">
+          <div class="logo">
+              <div class="leftin">
+                  <div></div>
+                  <div></div>
+              </div>
+              <div class="topin">
+                  <div></div>
+                  <div></div>
+              </div>
+          </div>
+          <div class="info">Welcome My Baby ~</div>
+      </div>
     </div>
     <script>
       var rdt = '<%= rdt %>';
@@ -29,11 +135,10 @@
             if (response.code === 0) {
               window.location.href = rdt;
             } else {
-              console.log(response.msg);
+              document.querySelector('.msg').innerHTML = response.msg;
             }
           } else {
-            // ajax失败
-            console.log('网络错误，请稍后重试');
+            document.querySelector('.msg').innerHTML = '网络错误，请稍后重试';
           }
         }
       };
@@ -49,14 +154,14 @@
             httpEnd(xhr);
           }
         } else {
-          console.log('用户名密码不能为空');
+          document.querySelector('.msg').innerHTML = '用户名密码不能为空';
         }
       };
       xhr.addEventListener('readystatechange', function(xhr) {
         httpEnd(this);
       }, false);
 
-      document.querySelector('button').addEventListener('click', handler, false);
+      document.querySelector('button.login').addEventListener('click', handler, false);
       document.querySelector('.password').addEventListener('keyup', function(event) {
         if(event.keyCode === 13) {
           handler(event);
