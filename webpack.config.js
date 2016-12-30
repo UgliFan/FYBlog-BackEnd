@@ -56,13 +56,18 @@ module.exports = {
     }),
     new ExtractTextPlugin('css/[name].css'),
     // new webpack.optimize.CommonsChunkPlugin("common", "js/common.bundle.js"),
-    new webpack.optimize.UglifyJsPlugin({
-      output: { comments: false },
-      compress: { warnings: false },
-      mangle: {
-        except: ['$super', '$', 'exports', 'require']
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify("production")
       }
-    })
+    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   output: { comments: false },
+    //   compress: { warnings: false },
+    //   mangle: {
+    //     except: ['$super', '$', 'exports', 'require']
+    //   }
+    // })
   ],
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.css'] //后缀名自动补全

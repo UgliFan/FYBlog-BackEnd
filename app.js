@@ -66,7 +66,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   console.log('app error');
-  res.render('error', {
+  res.render('404', {
     message: err.message,
     error: {}
   });

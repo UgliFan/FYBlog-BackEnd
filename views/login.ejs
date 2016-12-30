@@ -28,6 +28,7 @@
         font-size: 14px;
         line-height: 24px;
         box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+        z-index: 9000;
       }
       .header h1 {
         padding: 0 12px;
@@ -43,6 +44,7 @@
         white-space: nowrap;
         top: 360px;
         height: 24px;
+        font-size: 18px;
         line-height: 24px;
         width: 100%;
         text-align: center;
@@ -80,6 +82,9 @@
       .login {
         margin-left: 20px;
       }
+      .lflogo-container * {
+        box-sizing: content-box;
+      }
     </style>
   </head>
   <body>
@@ -95,7 +100,7 @@
         <input type="password" autocomplete="off" class="password" id="password" placeholder="密码">
       </div>
       <div class="block">
-        <button class="btn btn-lg">注册</button>
+        <a class="btn btn-lg" href="/register">注册</a>
         <button class="btn btn-lg guide login">登录</button>
       </div>
     </div>
