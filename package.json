@@ -4,8 +4,8 @@
   "description": "api,management for fyblog",
   "main": "server.js",
   "scripts": {
-    "dev": "export NODE_ENV=dev;node server.js",
-    "server-start": "export NODE_ENV=pro;forever start server.js",
+    "dev": "export NODE_ENV=development;node server.js",
+    "server-start": "export NODE_ENV=production;forever start server.js",
     "server-stop": "forever stop server.js"
   },
   "repository": {

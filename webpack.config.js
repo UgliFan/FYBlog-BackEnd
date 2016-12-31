@@ -3,7 +3,7 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin'); //css单独打包
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html
 
-var env = process.env.NODE_ENV || 'dev';
+var env = process.env.NODE_ENV || 'development';
 
 var ROOT_PATH = path.resolve(__dirname),
     APP_PATH = path.resolve(ROOT_PATH, 'src'),
@@ -61,20 +61,20 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   output: { comments: false },
-    //   compress: { warnings: false },
-    //   mangle: {
-    //     except: ['$super', '$', 'exports', 'require']
-    //   }
-    // })
+    new webpack.optimize.UglifyJsPlugin({
+      output: { comments: false },
+      compress: { warnings: false },
+      mangle: {
+        except: ['$super', '$', 'exports', 'require']
+      }
+    })
   ],
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.css'] //后缀名自动补全
   }
 };
 
-if (env === 'dev') {
-  //module.exports.output.sourceMapFilename = '[file].map';
-  //module.exports.devtool = '#source-map';
+if (env === 'development') {
+  module.exports.output.sourceMapFilename = '[file].map';
+  module.exports.devtool = '#source-map';
 }
