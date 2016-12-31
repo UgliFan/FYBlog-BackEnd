@@ -1,10 +1,10 @@
-var env = process.env.NODE_ENV || 'dev';
+var env = process.env.NODE_ENV || 'development';
 
 var config;
 switch (env) {
-  case 'dev':
+  case 'development':
     config = {
-      env: 'dev',
+      env: 'development',
       db:{
         server:'mongodb://139.196.165.203:27017/FYBlog',
         options:{
@@ -22,7 +22,7 @@ switch (env) {
     break;
   default:
     config = {
-      env: 'pro',
+      env: 'production',
       db:{
         server:'mongodb://127.0.0.1:27017/FYBlog',
         options:{
