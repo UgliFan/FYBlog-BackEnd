@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var fs = require('fs');
 var engines = require('consolidate');
+var favicon = require('serve-favicon');
 
 var config = require('./config');
 
@@ -14,10 +15,8 @@ global.__rootPath = __dirname;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-//app.engine('html', engines.mustache);
 app.set('view engine', 'ejs');
-
-//app.use(express.favicon());
+app.use(favicon(path.join(__dirname,'static/images','favicon.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -65,7 +64,7 @@ app.use(function(req, res, next) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.log('app error');
+  console.log(err,req);
   res.render('404', {
     message: err.message,
     error: {}

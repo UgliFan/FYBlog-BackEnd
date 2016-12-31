@@ -15,6 +15,5 @@ render(
     <Provider store={store}>
         {route}
     </Provider>,
-    //document.body.appendChild(document.createElement('div'))
     document.getElementById('app-root')
 );

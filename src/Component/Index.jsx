@@ -1,60 +1,62 @@
 import React, { Component, PropTypes } from 'react'
-//import pureRender from 'pure-render-decorator'
+import pureRender from 'pure-render-decorator'
 import { History, Link } from 'react-router'
 import { connect } from 'react-redux'
 import { is, fromJS } from 'immutable'
 import { Tool } from '../Libs/Tool'
 
-import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../Redux/Action/Index'
+import BlogRow from './common/BlogRow'
 
-import AddTodo from './common/AddTodo'
-import TodoList from './common/TodoList'
-import Footer from './common/Footer'
+import { setFilters, setToolBar } from '../Redux/Action/Index'
+import { fetchGets } from '../Redux/Action/Data'
 
-
+//@pureRender
 class Main extends Component {
   constructor() {
     super();
+    this.state = {
+      filters: [{name:'全部', on:true},{name: '解禁', isOff: false},{name: '下架', isOff: true}],
+      toolBar: [{
+        name: '新增',
+        icon: 'iconfont icon-write',
+        callBack: 'createBlog'
+      },{
+        name: '设置',
+        icon: 'iconfont icon-settings',
+        callBack: 'actionSetting'
+      }],
+      list: []
+    };
+  }
+  componentWillMount() {
+    this.props.dispatch(setFilters(this.state.filters));
+    this.props.dispatch(setToolBar(this.state.toolBar));
+    this.props.dispatch(fetchGets('/blog/page', {}, (list) => {
+      this.setState({
+        list: list
+      });
+    }, 'BlogList'));
   }
   render() {
-    const { dispatch, visibleTodos, visibilityFilter } = this.props;
     return (
-      <div>
-        <AddTodo onAddClick={text => dispatch(addTodo(text))} />
-        <TodoList todos={visibleTodos} onTodoClick={index => dispatch(completeTodo(index))} />
-        <Footer filter={visibilityFilter} onFilterChange={nextFilter => dispatch(setVisibilityFilter(nextFilter))} />
+      <div className={this.props.sideBarStatus ? 'container wide' : 'container'}>
+        {
+          this.state.list.map((blog, index) => {
+            return <BlogRow blog={blog} />
+          })
+        }
       </div>
     );
   }
 }
 
 Main.propTypes = {
-  visibleTodos: PropTypes.arrayOf(PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired
-  }).isRequired).isRequired,
-  visibilityFilter: PropTypes.oneOf([
-    VisibilityFilters.SHOW_ALL,
-    VisibilityFilters.SHOW_ACTIVE,
-    VisibilityFilters.SHOW_COMPLETED
-  ]).isRequired
-};
-
-function selectTodos(todos, filter) {
-  switch (filter) {
-    case VisibilityFilters.SHOW_ALL:
-      return todos;
-    case VisibilityFilters.SHOW_COMPLETED:
-      return todos.filter(todo => todo.completed);
-    case VisibilityFilters.SHOW_ACTIVE:
-      return todos.filter(todo => !todo.completed);
-  }
+  sideBarStatus: PropTypes.bool.isRequired
 };
 
 function select(state) {
   return {
-    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
+    sideBarStatus: state.sideBarToggle
   };
 }
 

@@ -4,17 +4,17 @@ var filters = require('../filters');
 
 router.get('/page', function(req, res, next) {
   var sortParams = { top: -1 },
-      queryParams = { isOff: false },
+      queryParams = {},
       pageSize = req.query.pagesize || 10,
       pageNum = req.query.pagenum || 0;
   var sortField = req.query.sortfield || 'updateAt';
   var sortOrder = req.query.sortorder || 'desc';
   sortParams[sortField] = sortOrder === 'desc' ? -1 : 1;
-  
+
   var _key = req.query._key || '';
   var s = req.query.s || '';
   if (_key && s) queryParams[_key] = eval('/' + s + '/');
-  if (req.query.status) queryParams.status = req.query.status;
+  if (req.query.isoff !== undefined) queryParams.isOff = req.query.isoff;
   BlogDao.page(queryParams, sortParams, pageNum, pageSize).then(function(blogs) {
     res.status(200).json({ code: 0, result: blogs });
   }).catch(function(error) {

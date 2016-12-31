@@ -1,3 +1,296 @@
 * {
   box-sizing: border-box;
 }
+
+/* common */
+$white: #fff;
+$gray: #ddd;
+$black: #333;
+$blue: #3367d6;
+$blueLight: #6a8dd8;
+
+$colorDanger: #d41919;
+
+$fontGrayst: #666;
+$fontGray: #999;
+$fontGrayer: #aaa;
+
+$transSpace: .3s;
+
+$level8: 8000;
+$level9: 9000;
+$level10: 9999;
+$borderRadius: 4px;
+$borderRadiusSm: 2px;
+$boxShadow: 0 2px 5px 0 rgba(0,0,0,.26);
+$boxShadowDark: 0 4px 8px 0 rgba(0,0,0,.38);
+$boxShadowHover: 0 2px 5px 0 rgba(0, 126, 255, 0.46);
+$boxShadowInline: 0 0px 4px 0 rgba(0, 0, 0, 0.26);
+$boxShadowInlineHover: 0 0px 4px 0 rgba(0, 126, 255, 0.26);
+
+$headerHeight: 60px;
+$sideBarWidth: 200px;
+
+header {
+  position: fixed;
+  top: 0;
+  padding: 18px 12px;
+  line-height: 24px;
+  width: 100%;
+  height: $headerHeight;
+  background-color: $blue;
+  box-shadow: $boxShadow;
+  color: $white;
+  z-index: $level9;
+  .side-toggle {
+    position: relative;
+    top: -13px;
+    float: left;
+    width: 50px;
+    height: 50px;
+    border: 1px solid $white;
+    background: $gray;
+    border-radius: 50%;
+    margin-right: 20px;
+    box-shadow: $boxShadow;
+    img {
+      border: none;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    i {
+      position: absolute;
+      left: -2px;
+      bottom: -2px;
+      display: block;
+      width: 14px;
+      height: 14px;
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #fff;
+      color: #666;
+      box-shadow: $boxShadow;
+      transition: transform $transSpace ease;
+    }
+  }
+  h1 {
+    padding: 0 12px;
+    display: inline;
+    font-size: 24px;
+  }
+  span {
+    font-size: 14px;
+  }
+  ul.tool-bar {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    margin-right: 10px;
+    li {
+      float: left;
+      width: 40px;
+      height: 40px;
+      margin-left: 20px;
+      font-size: 20px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  float: left;
+  width: $sideBarWidth;
+  height: 100%;
+  padding-top: $headerHeight + 10;
+  box-shadow: $boxShadow;
+  z-index: $level8;
+  background: #fbfbfb;
+  transform: translateX(0);
+  transition: transform $transSpace ease;
+  ul {
+    a {
+      color: $black;
+      text-decoration: none;
+      li {
+        height: 50px;
+        line-height: 30px;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        i {
+          position: relative;
+          margin-right: 20px;
+        }
+        &.active {
+          background-color: #eee;
+        }
+      }
+    }
+  }
+  &.collapsed {
+    transform: translateX(-$sideBarWidth);
+  }
+}
+
+.filters-bar {
+  position: fixed;
+  left: 220px;
+  bottom: 10px;
+  z-index: $level9;
+  transform: translateX(0);
+  transition: transform $transSpace ease;
+  white-space: nowrap;
+  &.wide {
+    transform: translateX(-$sideBarWidth);
+  }
+  .filter-item {
+    display: inline-block;
+    margin: 0 8px;
+    height: 24px;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: $fontGrayer;
+    background-color: $white;
+    box-shadow: $boxShadow;
+    cursor: pointer;
+    transition: all $transSpace ease;
+    &.on {
+      color: $white;
+      background: rgba(0, 126, 255, 0.86);
+      box-shadow: $boxShadowHover;
+    }
+    &:hover {
+      box-shadow: $boxShadowHover;
+    }
+  }
+}
+
+.container {
+  padding-left: $sideBarWidth;
+  padding-top: $headerHeight;
+  transition: all $transSpace ease;
+  &.wide {
+    padding-left: 0;
+  }
+
+  .blog-row {
+    position: relative;
+    width: 100%;
+    height: 102px;
+    border-bottom: 1px solid #ddd;
+    padding: 0 80px 0 100px;
+    &:first-child {
+      border-top: 1px solid #ddd;
+    }
+    .blog-img {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      left: 10px;
+      top: 10px;
+      i.icon-lock {
+        display: block;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        color: $white;
+        background-color: $colorDanger;
+        border-bottom-right-radius: 4px;
+      }
+      .default-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #eee;
+        color: #fff;
+        text-align: center;
+        line-height: 80px;
+        font-size: 60px;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .blog-title {
+      width: 100%;
+      height: 36px;
+      padding: 10px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: $black;
+      line-height: 16px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .blog-remark {
+      display: -webkit-box;
+      font-size: 12px;
+      color: $fontGray;
+      line-height: 16px;
+      max-height: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .blog-statistics {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      height: 18px;
+      margin: 0 80px 0 100px;
+      overflow: hidden;
+      .item {
+        float: left;
+        margin-right: 10px;
+        color: $fontGrayst;
+        border: 1px solid $fontGray;
+        padding: 1px 4px;
+        font-size: 12px;
+        height: 18px;
+        line-height: 12px;
+        border-radius: $borderRadiusSm;
+      }
+    }
+    .blog-actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 100px;
+      padding: 10px;
+      .action {
+        width: 100%;
+        height: 20px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 20px;
+        cursor: pointer;
+        color: $fontGrayst;
+        box-shadow: $boxShadowInline;
+        &:hover {
+          box-shadow: $boxShadowInlineHover;
+          color: $blueLight;
+        }
+      }
+    }
+  }
+}

@@ -75,6 +75,6 @@ module.exports = {
 };
 
 if (env === 'dev') {
-  module.exports.output.sourceMapFilename = '[file].map';
-  module.exports.devtool = '#source-map';
+  //module.exports.output.sourceMapFilename = '[file].map';
+  //module.exports.devtool = '#source-map';
 }
