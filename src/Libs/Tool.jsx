@@ -144,4 +144,25 @@ Tool.removeLocalItem = (key) => {
   return localStorage.removeItem();
 };
 
+Tool.paramsFormat = data => {
+  let paramArr = [];
+  for (let attr in data) {
+    paramArr.push(`${attr}=${data[attr]}`);
+  }
+  return `?${paramArr.join('&')}`;
+};
+
+Tool.numberFormat = num => {
+  if (num === undefined || (typeof num !== 'number') || num === 0) {
+    return '-';
+  }
+  if (Math.abs(num) <= 10000) {
+    return num;
+  } else if (Math.abs(num) <= 100000000) {
+    return Math.round(num/1000) / 10 + '万';
+  } else {
+    return Math.round(num/10000000) / 10 + '亿';
+  }
+};
+
 export { Tool, Target }

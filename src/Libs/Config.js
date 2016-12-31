@@ -21,7 +21,7 @@ if ('addEventListener' in document) {
   }, false);
 }
 
-const system = (() => {
+const System = (() => {
   let u = navigator.userAgent;
   let system = (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1)
     ? 'Android' : (!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
@@ -29,6 +29,6 @@ const system = (() => {
   return system;
 })();
 
-const target = process.env.NODE_ENV !== 'production' ? '' : 'http://api.fyq2yj.cn'; //目标网站
+const Target = process.env.NODE_ENV !== 'production' ? '' : '//back.fyq2yj.cn'; //目标网站
 
-export { target, system }
+export { Target, System }

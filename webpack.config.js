@@ -3,6 +3,8 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin'); //css单独打包
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html
 
+var env = process.env.NODE_ENV || 'dev';
+
 var ROOT_PATH = path.resolve(__dirname),
     APP_PATH = path.resolve(ROOT_PATH, 'src'),
     APP_FILE = path.resolve(APP_PATH, 'App.jsx'),
@@ -15,10 +17,8 @@ module.exports = {
   output: {
     path: BUILD_PATH,
     publicPath: '/',
-    filename: 'js/[name].js?v=[hash:6]',
-    sourceMapFilename: '[file].map'
+    filename: 'js/[name].js?v=[hash:6]'
   },
-  devtool: '#source-map',
   module: {
     noParse: /es6-promise\.js$/,
     loaders: [{
@@ -56,15 +56,25 @@ module.exports = {
     }),
     new ExtractTextPlugin('css/[name].css'),
     // new webpack.optimize.CommonsChunkPlugin("common", "js/common.bundle.js"),
-    new webpack.optimize.UglifyJsPlugin({
-      output: { comments: false },
-      compress: { warnings: false },
-      mangle: {
-        except: ['$super', '$', 'exports', 'require']
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify("production")
       }
-    })
+    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   output: { comments: false },
+    //   compress: { warnings: false },
+    //   mangle: {
+    //     except: ['$super', '$', 'exports', 'require']
+    //   }
+    // })
   ],
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.css'] //后缀名自动补全
   }
 };
+
+if (env === 'dev') {
+  //module.exports.output.sourceMapFilename = '[file].map';
+  //module.exports.devtool = '#source-map';
+}

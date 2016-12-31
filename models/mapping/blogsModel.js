@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
 
 var schema = new Schema({
   title: { type: String },
+  remark: { type: String },
+  icon: { type: String },
   content: { type: String },
   author: { type: String },
   top: { type: Boolean, default: false },
@@ -12,7 +14,6 @@ var schema = new Schema({
   create_at: { type: Number },
   last_reply: { type: String },
   last_reply_at: { type: Number },
-  content_is_html: { type: Boolean },
   isOff: { type: Boolean }
 });
 
