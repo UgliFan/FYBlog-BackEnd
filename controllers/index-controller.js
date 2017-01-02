@@ -12,7 +12,7 @@ var checkUid = function(req, res) {
   }
 };
 
-router.get('token', function(req, res, next) {
+router.get('/token', function(req, res, next) {
   if (req.session.accessToken && checkUid(req, res)) {
     var token = jwt.encode({
       foo: req.session.accessToken

@@ -6,6 +6,8 @@ import store from './Redux/Store/Store'
 import './Libs/Config'//引入默认配置
 // 引入样式
 import './Styles/index.scss'
+import './Styles/blog.scss'
+import './Styles/blog-edit.scss'
 
 let unsubscribe = store.subscribe(() => { //监听state变化
     console.log(store.getState())

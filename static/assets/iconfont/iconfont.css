@@ -1,14 +1,15 @@
-@font-face {
-  font-family: 'iconfont';
-  src: url('/assets/iconfont/iconfont.eot');
-  src: url('/assets/iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
-  url('/assets/iconfont/iconfont.woff') format('woff'),
-  url('/assets/iconfont/iconfont.ttf') format('truetype'),
-  url('/assets/iconfont/iconfont.svg#iconfontyyy') format('svg');
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1483257905831'); /* IE9*/
+  src: url('iconfont.eot?t=1483257905831#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1483257905831') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1483257905831') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1483257905831#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
   font-family:"iconfont" !important;
+  font-size:16px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -195,3 +196,4 @@
 .icon-skin:before { content: "\e7cd"; }
 
 .icon-global:before { content: "\e7eb"; }
+

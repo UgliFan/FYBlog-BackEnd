@@ -64,7 +64,7 @@ app.use(function(req, res, next) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.log(err.originalUrl);
+  console.log(err);
   res.render('404', {
     message: err.message,
     error: {}

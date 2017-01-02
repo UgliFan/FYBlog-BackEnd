@@ -7,7 +7,9 @@ import {
   MENU_CHANGE,
   SET_FILTERS,
   SELECT_FILTER,
-  SET_TOOLBAR
+  SET_TOOLBAR,
+  SETTING_TOGGLE,
+  INDEX_SCROLL_POS
 } from '../Action/Index'
 
 import {
@@ -19,9 +21,27 @@ import {
   ERROR_POSTS
 } from '../Action/Data'
 
+export function indexScrollPos(state = 0, action) {
+  switch (action.type) {
+    case INDEX_SCROLL_POS:
+      return action.pos;
+    default:
+      return state;
+  }
+}
+
 export function sideBarToggle(state = (System ? true : false), action) {
   switch (action.type) {
     case SIDE_BAR_TOGGLE:
+      return !state;
+    default:
+      return state;
+  }
+}
+
+export function settingStatus(state = false, action) {
+  switch (action.type) {
+    case SETTING_TOGGLE:
       return !state;
     default:
       return state;

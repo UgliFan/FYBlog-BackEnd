@@ -7,7 +7,7 @@ import { Tool } from '../Libs/Tool'
 
 import BlogRow from './common/BlogRow'
 
-import { setFilters, setToolBar } from '../Redux/Action/Index'
+import { setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
 //@pureRender
@@ -15,18 +15,54 @@ class Main extends Component {
   constructor() {
     super();
     this.state = {
-      filters: [{name:'全部', on:true},{name: '解禁', isOff: false},{name: '下架', isOff: true}],
-      toolBar: [{
-        name: '新增',
-        icon: 'iconfont icon-write',
-        callBack: 'createBlog'
+      filters: [{
+        name:'全部',
+        on:true,
+        callBack: this.refreshList
       },{
+        name: '未锁',
+        key: 'isOff',
+        value: false,
+        callBack: this.refreshList
+      },{
+        name: '已锁',
+        key: 'isOff',
+        value: true,
+        callBack: this.refreshList
+      }],
+      toolBar: [{
+        type: 'link',
+        name: '新增',
+        icon: 'iconfont icon-add',
+        callBack: '/blogs/edit'
+      },{
+        type: 'reducer',
         name: '设置',
         icon: 'iconfont icon-settings',
-        callBack: 'actionSetting'
+        callBack: 'toggleSetting'
       }],
       list: []
     };
+  }
+  deleteBlog(id) {
+    Tool.get('/token').then(data => {
+      Tool.post(`/blog/remove/${id}`,{token: data.token}).then(data => {
+        this.refreshList();
+      });
+    });
+  }
+  refreshList() {
+    var param = {};
+    this.props.currentFilters.forEach((filter, index) => {
+      if (filter.on && filter.key) {
+        param[filter.key.toLowerCase()] = filter.value;
+      }
+    });
+    this.props.dispatch(fetchGets('/blog/page', param, (list) => {
+      this.setState({
+        list: list
+      });
+    }, 'BlogList'));
   }
   componentWillMount() {
     this.props.dispatch(setFilters(this.state.filters));
@@ -37,12 +73,32 @@ class Main extends Component {
       });
     }, 'BlogList'));
   }
+  componentDidUpdate() {
+    document.body.scrollTop = this.props.indexScrollPos;
+  }
+  componentWillUnmount() {
+    this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
+  }
+  blogPropChange(key, url) {
+    Tool.get('/token').then(data => {
+      let postData ={
+        token: data.token
+      };
+      Tool.post(url + '/' + key, postData).then(data => {
+        this.refreshList();
+      }).catch(err => {
+        console.log('error', err);
+      });
+    }).catch(err => {
+      console.log('get Token error', err);
+    });
+  }
   render() {
     return (
-      <div className={this.props.sideBarStatus ? 'container wide' : 'container'}>
+      <div className={this.props.sideBarStatus ? 'blog-container wide' : 'blog-container'}>
         {
           this.state.list.map((blog, index) => {
-            return <BlogRow blog={blog} />
+            return <BlogRow key={index} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
           })
         }
       </div>
@@ -51,12 +107,18 @@ class Main extends Component {
 }
 
 Main.propTypes = {
-  sideBarStatus: PropTypes.bool.isRequired
+  sideBarStatus: PropTypes.bool.isRequired,
+  settingStatus: PropTypes.bool.isRequired,
+  currentFilters: PropTypes.array.isRequired,
+  indexScrollPos: PropTypes.number.isRequired
 };
 
 function select(state) {
   return {
-    sideBarStatus: state.sideBarToggle
+    sideBarStatus: state.sideBarToggle,
+    settingStatus: state.settingStatus,
+    currentFilters: state.currentFilters,
+    indexScrollPos: state.indexScrollPos
   };
 }
 
