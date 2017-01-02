@@ -3,6 +3,8 @@ export const MENU_CHANGE = 'MENU_CHANGE';
 export const SET_FILTERS = 'SET_FILTERS';
 export const SELECT_FILTER = 'SELECT_FILTER';
 export const SET_TOOLBAR = 'SET_TOOLBAR';
+export const SETTING_TOGGLE = 'SETTING_TOGGLE';
+export const INDEX_SCROLL_POS = 'INDEX_SCROLL_POS';
 
 export const MenuList = [{
   key: 1,
@@ -49,4 +51,12 @@ export function selectFilter(index) {
 
 export function setToolBar(toolBar) {
   return { type: SET_TOOLBAR, toolBar };
+}
+
+export function toggleSetting() {
+  return { type: SETTING_TOGGLE };
+}
+
+export function setIndexScrollPos(pos) {
+  return { type: INDEX_SCROLL_POS, pos };
 }

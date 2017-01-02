@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 import { Tool } from '../../Libs/Tool'
 
 export default class BlogRow extends Component {
   render() {
-    const { blog } = this.props;
+    const { blog, settingStatus } = this.props;
     return (
-      <div className='blog-row'>
+      <div className={'blog-row' + (settingStatus ? ' hover' : '')}>
         <div className='blog-img'>
-          { blog.isOff ? <i className='iconfont icon-lock'></i> : null }
           {
             blog.icon ? <img src={blog.icon} />
             : <i className='default-img iconfont icon-text'></i>
           }
+          { blog.isOff ? <i className='iconfont icon-lock'></i> : null }
+          { blog.top ? <i className='iconfont icon-top'></i> : null }
         </div>
         <h4 className='blog-title'>{ blog.title }</h4>
         <p className='blog-remark'>{ blog.remark }</p>
@@ -22,10 +24,10 @@ export default class BlogRow extends Component {
           <div className='item'><i className='iconfont icon-comment'></i><span>{ Tool.numberFormat(blog.reply_count) }</span></div>
         </div>
         <div className='blog-actions'>
-          <div className='action'>编辑</div>
-          <div className='action'>置顶</div>
-          <div className='action'>{ blog.isOff ? '解禁' : '下架'}</div>
-          <div className='action'>删除</div>
+          <Link to={`/blogs/edit/${blog._id}`}><div className='action'><i className='iconfont icon-write'></i></div></Link>
+          <div className='action' onClick={() => this.props.propChange(blog._id, ('/blog/' + (blog.top ? 'down' : 'up')))}>{ blog.top ? <i className='iconfont icon-down'></i> : <i className='iconfont icon-top'></i> }</div>
+          <div className='action' onClick={() => this.props.propChange(blog._id, ('/blog/' + (blog.isOff ? 'on' : 'off')))}>{ blog.isOff ? <i className='iconfont icon-unlock'></i> : <i className='iconfont icon-lock'></i>}</div>
+          <div className='action' onClick={() => this.props.onDelete(blog._id)}><i className='iconfont icon-delete'></i></div>
         </div>
       </div>
     );
@@ -33,5 +35,8 @@ export default class BlogRow extends Component {
 }
 
 BlogRow.propTypes = {
-  blog: PropTypes.object.isRequired
+  blog: PropTypes.object.isRequired,
+  settingStatus: PropTypes.bool.isRequired,
+  propChange: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };

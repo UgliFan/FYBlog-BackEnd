@@ -6,19 +6,18 @@ import { is, fromJS } from 'immutable'
 import { System } from '../Libs/Config'
 import { Tool } from '../Libs/Tool'
 
-import {
-  toggleSideBar,
-  changeMenu,
-  selectFilter
-} from '../Redux/Action/Index'
+import * as Action from '../Redux/Action/Index'
 
 import Header from './common/Header'
 import SideBar from './common/SideBar'
 
 //@pureRender
 class Frame extends Component {
-  filterChange(index) {
-    console.log('change', index);
+  filterChange(filter) {
+    filter.callBack && filter.callBack();
+  }
+  toolAction(action, dispatch) {
+    dispatch(Action[action]());
   }
   render() {
     const { dispatch, sideBarStatus, menuStatus, toolBar } = this.props;
@@ -28,10 +27,11 @@ class Frame extends Component {
           menuList={menuStatus}
           userInfo={{ icon: '/images/404.jpg' }}
           sideBarStatus={sideBarStatus}
-          sideBarTigger={() => dispatch(toggleSideBar())}
-          toolBar={toolBar}/>
+          sideBarTigger={() => dispatch(Action.toggleSideBar())}
+          toolBar={toolBar}
+          toolAction={action => this.toolAction(action, dispatch)}/>
         <SideBar menuList={menuStatus} status={sideBarStatus} onChange={index => {
-          dispatch(changeMenu(index)) && (System ? dispatch(toggleSideBar()) : null);
+          dispatch(Action.changeMenu(index)) && (System ? dispatch(Action.toggleSideBar()) : null);
         }}/>
         {this.props.children}
         <div className={'filters-bar' + (sideBarStatus ? ' wide' : '')}>
@@ -39,7 +39,7 @@ class Frame extends Component {
             return (
               <div
                 className={'filter-item' + (filter.on ? ' on': '')}
-                key={index} onClick={() => dispatch(selectFilter(index)) && this.filterChange(index)}>
+                key={index} onClick={() => dispatch(Action.selectFilter(index)) && this.filterChange(filter)}>
                 <i className="iconfont icon-filter"></i>
                 {filter.name}
               </div>

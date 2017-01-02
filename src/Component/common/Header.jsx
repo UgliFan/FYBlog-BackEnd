@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 export default class Header extends Component {
   constructor() {
@@ -35,7 +36,10 @@ export default class Header extends Component {
         <h1>{this.state.title}</h1>
         <ul className='tool-bar'>
           {this.props.toolBar.map((tool, index) => {
-            return <li title={tool.name}><i className={tool.icon}></i></li>;
+            return tool.type === 'reducer' ?
+              <li title={tool.name} onClick={() => this.props.toolAction(tool.callBack)}><i className={tool.icon}></i></li>
+              : (tool.type === 'link' ? <Link to={tool.callBack}><li title={tool.name}><i className={tool.icon}></i></li></Link>
+              : <li title={tool.name} onClick={() => tool.callBack()}><i className={tool.icon}></i></li>);
           })}
         </ul>
       </header>
@@ -49,5 +53,6 @@ Header.propTypes = {
   sideBarTigger: PropTypes.func.isRequired,
   userInfo: PropTypes.object.isRequired,
   menuList: PropTypes.array.isRequired,
-  toolBar: PropTypes.array.isRequired
+  toolBar: PropTypes.array.isRequired,
+  toolAction: PropTypes.func.isRequired
 };

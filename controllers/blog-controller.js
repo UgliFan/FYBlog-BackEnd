@@ -7,7 +7,7 @@ router.get('/page', function(req, res, next) {
       queryParams = {},
       pageSize = req.query.pagesize || 10,
       pageNum = req.query.pagenum || 0;
-  var sortField = req.query.sortfield || 'updateAt';
+  var sortField = req.query.sortfield || 'create_at';
   var sortOrder = req.query.sortorder || 'desc';
   sortParams[sortField] = sortOrder === 'desc' ? -1 : 1;
 
@@ -42,8 +42,10 @@ router.post('/new', filters.accessToken, function(req, res, next) {
     params.last_reply = null;
     params.last_reply_at = null;
     params.create_at = new Date().getTime();
-    params.content_is_html = false;
     params.isOff = false;
+    if (!params.remark) {
+      params.remark = params.content.substr(0, 30);
+    }
     BlogDao.save(params).then(function() {
       res.status(200).json({ code: 0, msg: '保存成功' });
     }).catch(function(error) {
@@ -57,6 +59,8 @@ router.post('/new', filters.accessToken, function(req, res, next) {
 router.post('/set', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var params = {
+      title: req.body.title,
+      remark: req.body.remark,
       content: req.body.content,
       author: req.session.user.name
     };
@@ -90,6 +94,37 @@ router.post('/up/:id', filters.accessToken, function(req, res, next) {
   }
 });
 
+router.post('/down/:id', filters.accessToken, function(req, res, next) {
+  if (req.params.accessToken) {
+    BlogDao.update({
+      _id: req.params.id
+    }, {
+      $set: { top: false }
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '取消置顶成功' });
+    }).catch(function(error) {
+      next(error);
+    });
+  } else {
+    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+  }
+});
+
+router.post('/on/:id', filters.accessToken, function(req, res, next) {
+  if (req.params.accessToken) {
+    BlogDao.update({
+      _id: req.params.id
+    }, {
+      $set: { isOff: false }
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '上架成功' });
+    }).catch(function(error) {
+      next(error);
+    });
+  } else {
+    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+  }
+});
 
 router.post('/off/:id', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
@@ -110,7 +145,7 @@ router.post('/off/:id', filters.accessToken, function(req, res, next) {
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var _id = req.params.id;
-    BlogDao.delete(_id).then(function() {
+    BlogDao.delete({_id: _id}).then(function() {
       res.status(200).json({ code: 0, msg: '删除成功' });
     }).catch(function(error) {
       next(error);
