@@ -58,6 +58,7 @@ class Main extends Component {
         param[filter.key.toLowerCase()] = filter.value;
       }
     });
+    this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
     this.props.dispatch(fetchGets('/blog/page', param, (list) => {
       this.setState({
         list: list
