@@ -8,7 +8,7 @@ import { Tool } from '../Libs/Tool'
 import { changeMenu, setFilters, setToolBar } from '../Redux/Action/Index'
 
 //@pureRender
-class Tags extends Component {
+class Comments extends Component {
   constructor() {
     super();
     this.state = {
@@ -16,7 +16,7 @@ class Tags extends Component {
     };
   }
   componentWillMount() {
-    this.props.dispatch(changeMenu(2));
+    this.props.dispatch(changeMenu(3));
     this.props.dispatch(setFilters(this.state.filters));
     this.props.dispatch(setToolBar([]));
   }
@@ -27,7 +27,7 @@ class Tags extends Component {
   }
 }
 
-Tags.propTypes = {
+Comments.propTypes = {
 };
 
 function select(state) {
@@ -35,4 +35,4 @@ function select(state) {
   };
 }
 
-export default connect(select)(Tags);
+export default connect(select)(Comments);

@@ -22,8 +22,8 @@ BaseDao.prototype.checkExist = function(info) {
   });
 };
 
-BaseDao.prototype.resetPass = function(user) {
-  var self = this, id = user._id;
+BaseDao.prototype.resetPass = function(id) {
+  var self = this;
   return self.update({
     _id: id
   }, {

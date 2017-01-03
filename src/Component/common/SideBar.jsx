@@ -9,7 +9,7 @@ export default class SideBar extends Component {
           {this.props.menuList.map((menu, index) => {
             return (<Link to={menu.link}><li key={index}
               className={menu.active ? 'active' : ''}
-              onClick={() => this.props.onChange(menu.key)}>
+              onClick={() => this.props.onChange()}>
               <i className={menu.active ? menu.classNameActive : menu.className}></i>
               {menu.name}
             </li></Link>);

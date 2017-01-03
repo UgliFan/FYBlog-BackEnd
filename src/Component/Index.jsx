@@ -7,7 +7,7 @@ import { Tool } from '../Libs/Tool'
 
 import BlogRow from './common/BlogRow'
 
-import { setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
+import { changeMenu, setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
 //@pureRender
@@ -66,6 +66,7 @@ class Main extends Component {
     }, 'BlogList'));
   }
   componentWillMount() {
+    this.props.dispatch(changeMenu(1));
     this.props.dispatch(setFilters(this.state.filters));
     this.props.dispatch(setToolBar(this.state.toolBar));
     this.props.dispatch(fetchGets('/blog/page', {}, (list) => {
