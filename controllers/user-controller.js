@@ -23,6 +23,7 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
+  req.body.icon = req.body.icon || '/images/404.jpg';
   req.body.groupId = 1; // 强制注册用户为普通用户
   req.body.updateAt = req.body.createAt = new Date().getTime();
   req.body.active = true;

@@ -14,4 +14,10 @@ router.get('/login', function(req, res, next) {
   });
 });
 
+router.get('/register', function(req, res, next) {
+  res.render('register', {
+    rdt: decodeURIComponent(req.query.rdt || '/')
+  });
+});
+
 module.exports = router;
