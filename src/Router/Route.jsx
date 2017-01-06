@@ -4,7 +4,7 @@ import { Router, Route, Redirect, IndexRoute, browserHistory, hashHistory } from
 import Roots from '../Component/Frame';
 import Index from '../Component/Index';
 
-const history = process.env.NODE_ENV != 'production' ? browserHistory : hashHistory;
+const history = hashHistory;
 
 const BlogEdit = (location, cb) => {
     require.ensure([], require => {

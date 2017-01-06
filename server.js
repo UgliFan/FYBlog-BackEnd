@@ -1,6 +1,8 @@
 var app = require('./app');
 var http = require('http');
 
+var env = process.env.NODE_ENV || 'development';
+
 var normalizePort = function(val) {
   var port = parseInt(val, 10);
   if (isNaN(port)) return 8823;
@@ -32,7 +34,6 @@ var onListening = function() {
   var bind = typeof addr === 'string' ? ('Pipe ' + addr) : ('Port ' + addr.port);
   console.log('Listening on ' + bind);
 };
-
 
 var server = http.createServer(app);
 server.listen(port);

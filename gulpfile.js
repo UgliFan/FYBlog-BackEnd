@@ -5,7 +5,7 @@ var plumber = require('gulp-plumber');
 var webpack = require('gulp-webpack');
 
 gulp.task('css', function() {
-  return gulp.src(['src/Styles/common/*.scss'])
+  return gulp.src(['styles/*.scss'])
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
     .pipe(cssmin())
@@ -20,7 +20,7 @@ gulp.task('webpack', function() {
 });
 
 gulp.task('watch', ['publish'], function(){
-  gulp.watch(['src/Styles/common/*.scss'], ['css']);
+  gulp.watch(['styles/*.scss'], ['css']);
   gulp.watch(['src/**/*'], ['webpack']);
 });
 

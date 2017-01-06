@@ -37,9 +37,9 @@ export default class Header extends Component {
         <ul className='tool-bar'>
           {this.props.toolBar.map((tool, index) => {
             return tool.type === 'reducer' ?
-              <li title={tool.name} onClick={() => this.props.toolAction(tool.callBack)}><i className={tool.icon}></i></li>
-              : (tool.type === 'link' ? <Link to={tool.callBack}><li title={tool.name}><i className={tool.icon}></i></li></Link>
-              : <li title={tool.name} onClick={() => tool.callBack()}><i className={tool.icon}></i></li>);
+              <li key={index} title={tool.name} onClick={() => this.props.toolAction(tool.callBack)}><i className={tool.icon}></i></li>
+              : (tool.type === 'link' ? <Link key={index} to={tool.callBack}><li title={tool.name}><i className={tool.icon}></i></li></Link>
+              : <li key={index} title={tool.name} onClick={() => tool.callBack()}><i className={tool.icon}></i></li>);
           })}
         </ul>
       </header>
@@ -48,7 +48,6 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
-  title: PropTypes.string.isRequired,
   sideBarStatus: PropTypes.bool.isRequired,
   sideBarTigger: PropTypes.func.isRequired,
   userInfo: PropTypes.object.isRequired,
