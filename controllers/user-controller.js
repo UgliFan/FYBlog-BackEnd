@@ -23,6 +23,7 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
+  req.body.icon = req.body.icon || '/images/404.jpg';
   req.body.groupId = 1; // 强制注册用户为普通用户
   req.body.updateAt = req.body.createAt = new Date().getTime();
   req.body.active = true;
@@ -42,16 +43,56 @@ router.post('/register', function(req, res, next) {
   });
 });
 
-router.post('/reset', filters.accessToken, function(req, res, next) {
+router.post('/reset/:id', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
-    UserDao.getUserInfo(req.body.name).then(function(users) {
+    UserDao.getById(req.params.id).then(function(users) {
       if (!users || users.length < 1) {
         res.status(200).json({ code: -100, msg: '当前用户不存在' });
       } else {
-        UserDao.resetPass(req.body).then(function() {
+        UserDao.resetPass(req.params.id).then(function() {
           res.status(200).json({ code: 0, msg: '重置成功' });
         }).catch(function(error) {
           res.status(200).json({ code: -200, msg: '重置失败', extraMsg: error });
+        });
+      }
+    }).catch(function(error) {
+      next(error);
+    });
+  } else {
+    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+  }
+});
+
+router.post('/lock/:id', filters.accessToken, function(req, res, next) {
+  if (req.params.accessToken) {
+    UserDao.getById(req.params.id).then(function(users) {
+      if (!users || users.length < 1) {
+        res.status(200).json({ code: -100, msg: '当前用户不存在' });
+      } else {
+        UserDao.update({_id:req.params.id},{$set:{active: false}},{}).then(function() {
+          res.status(200).json({ code: 0, msg: '冻结成功' });
+        }).catch(function(error) {
+          res.status(200).json({ code: -200, msg: '冻结失败', extraMsg: error });
+        });
+      }
+    }).catch(function(error) {
+      next(error);
+    });
+  } else {
+    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+  }
+});
+
+router.post('/unlock/:id', filters.accessToken, function(req, res, next) {
+  if (req.params.accessToken) {
+    UserDao.getById(req.params.id).then(function(users) {
+      if (!users || users.length < 1) {
+        res.status(200).json({ code: -100, msg: '当前用户不存在' });
+      } else {
+        UserDao.update({_id:req.params.id},{$set:{active: true}},{}).then(function() {
+          res.status(200).json({ code: 0, msg: '解冻成功' });
+        }).catch(function(error) {
+          res.status(200).json({ code: -200, msg: '解冻失败', extraMsg: error });
         });
       }
     }).catch(function(error) {

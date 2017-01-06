@@ -30,9 +30,7 @@ class Frame extends Component {
           sideBarTigger={() => dispatch(Action.toggleSideBar())}
           toolBar={toolBar}
           toolAction={action => this.toolAction(action, dispatch)}/>
-        <SideBar menuList={menuStatus} status={sideBarStatus} onChange={index => {
-          dispatch(Action.changeMenu(index)) && (System ? dispatch(Action.toggleSideBar()) : null);
-        }}/>
+        <SideBar menuList={menuStatus} status={sideBarStatus} onChange={() => (System ? dispatch(Action.toggleSideBar()) : null)}/>
         {this.props.children}
         <div className={'filters-bar' + (sideBarStatus ? ' wide' : '')}>
           {this.props.currentFilters.map((filter, index) => {

@@ -13,7 +13,7 @@ router.get('/page', function(req, res, next) {
 
   var _key = req.query._key || '';
   var s = req.query.s || '';
-  if (_key && s) queryParams[_key] = eval('/' + s + '/');
+  if (_key && s) queryParams[_key] = eval('/' + s + '/i');
   if (req.query.isoff !== undefined) queryParams.isOff = req.query.isoff;
   BlogDao.page(queryParams, sortParams, pageNum, pageSize).then(function(blogs) {
     res.status(200).json({ code: 0, result: blogs });

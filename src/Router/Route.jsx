@@ -4,7 +4,13 @@ import { Router, Route, Redirect, IndexRoute, browserHistory, hashHistory } from
 import Roots from '../Component/Frame';
 import Index from '../Component/Index';
 
-const history = process.env.NODE_ENV != 'production' ? browserHistory : hashHistory;
+const history = hashHistory;
+
+const BlogEdit = (location, cb) => {
+    require.ensure([], require => {
+        cb(null, require('../Component/BlogEdit').default)
+    },'BlogEdit')
+};
 
 const Tags = (location, cb) => {
     require.ensure([], require => {
@@ -12,10 +18,16 @@ const Tags = (location, cb) => {
     },'Tags')
 };
 
-const BlogEdit = (location, cb) => {
+const Comments = (location, cb) => {
     require.ensure([], require => {
-        cb(null, require('../Component/BlogEdit').default)
-    },'BlogEdit')
+        cb(null, require('../Component/Comments').default)
+    },'Comments')
+};
+
+const Users = (location, cb) => {
+    require.ensure([], require => {
+        cb(null, require('../Component/Users').default)
+    },'Users')
 };
 
 const RouteConfig = (
@@ -25,6 +37,8 @@ const RouteConfig = (
       <Route path="blogs" component={ Index } />
       <Route path="blogs/edit(/:id)" getComponent={ BlogEdit } />
       <Route path="tags" getComponent={ Tags } />
+      <Route path="comments" getComponent={ Comments } />
+      <Route path="users" getComponent={ Users } />
       <Redirect from="*" to="/" />
     </Route>
   </Router>

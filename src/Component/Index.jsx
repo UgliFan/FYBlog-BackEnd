@@ -7,7 +7,7 @@ import { Tool } from '../Libs/Tool'
 
 import BlogRow from './common/BlogRow'
 
-import { setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
+import { changeMenu, setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
 //@pureRender
@@ -58,6 +58,7 @@ class Main extends Component {
         param[filter.key.toLowerCase()] = filter.value;
       }
     });
+    this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
     this.props.dispatch(fetchGets('/blog/page', param, (list) => {
       this.setState({
         list: list
@@ -65,6 +66,7 @@ class Main extends Component {
     }, 'BlogList'));
   }
   componentWillMount() {
+    this.props.dispatch(changeMenu(1));
     this.props.dispatch(setFilters(this.state.filters));
     this.props.dispatch(setToolBar(this.state.toolBar));
     this.props.dispatch(fetchGets('/blog/page', {}, (list) => {
@@ -98,7 +100,7 @@ class Main extends Component {
       <div className={this.props.sideBarStatus ? 'blog-container wide' : 'blog-container'}>
         {
           this.state.list.map((blog, index) => {
-            return <BlogRow key={index} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
+            return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
           })
         }
       </div>

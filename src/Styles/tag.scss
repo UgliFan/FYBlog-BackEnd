@@ -1,0 +1,14 @@
+@import "variable.scss";
+
+.blog-container {
+  padding-left: $sideBarWidth;
+  padding-top: $headerHeight;
+  transition: all $transSpace ease;
+  &.wide {
+    padding-left: 0;
+  }
+
+  .tag-item {
+    
+  }
+}

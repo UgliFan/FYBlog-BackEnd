@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>登录 - FYBlog</title>
+    <meta name="description" content="FYBlog, Based on React" />
+    <meta name="keywords" content="FYBlog" />
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/assets/iconfont/iconfont.css">
+    <link rel="stylesheet" href="/assets/animelogo/index.css">
+    <link rel="stylesheet" href="/css/common/common.css">
+    <style>
+      body {
+        height: 100%;
+      }
+      .header {
+        background: #3367d6;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        height: 60px;
+        padding: 18px 12px;
+        color: #fff;
+        font-size: 14px;
+        line-height: 24px;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+        z-index: 9000;
+      }
+      .header h1 {
+        padding: 0 12px;
+        display: inline;
+        font-size: 24px;
+        line-height: 24px;
+      }
+      .msg {
+        position: absolute;
+        padding: 0 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        top: 60px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 24px;
+        width: 100%;
+        text-align: center;
+        color: #ec9200;
+      }
+      .login-container {
+        position: relative;
+        max-width: 320px;
+        margin: 0 auto;
+        padding: 80px 30px 30px;
+        text-align: center;
+      }
+      label[for] {
+        display: block;
+        text-align: left;
+        font-size: 18px;
+        line-height: 20px;
+        font-weight: 700;
+        height: 30px;
+        padding: 5px 0;
+      }
+      label.checkbox {
+        margin: 0 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      input[type="text"],input[type="password"] {
+        width: 100%;
+        height: 30px;
+        padding: 5px 16px;
+        line-height: 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+        outline: 0;
+      }
+      .register {
+        margin-left: 20px;
+      }
+      .block {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header"><h1>FYBlog</h1> ( Register )</div>
+    <div class="msg"></div>
+    <div class="login-container">
+      <div class="block">
+        <label for="username"><i class="iconfont icon-people"></i> 用户名</label>
+        <input type="text" autocomplete="off" class="user-name" id="username" placeholder="用户名">
+      </div>
+      <div class="block">
+        <label for=""><i class="iconfont icon-profile"></i> 性别</label>
+        <label class="checkbox checked" data-value="male"><i class="iconfont icon-squarecheck"></i>男</label>
+        <label class="checkbox" data-value="female"><i class="iconfont icon-square"></i>女</label>
+      </div>
+      <div class="block">
+        <label for="email"><i class="iconfont icon-people"></i> 邮箱</label>
+        <input type="text" autocomplete="off" class="email" id="email" placeholder="邮箱">
+      </div>
+      <div class="block">
+        <label for="tel"><i class="iconfont icon-people"></i> 手机</label>
+        <input type="text" autocomplete="off" class="tel" id="tel" placeholder="手机">
+      </div>
+      <div class="block">
+        <label for="password"><i class="iconfont icon-lock"></i> 密码</label>
+        <input type="password" autocomplete="off" class="password" id="password" placeholder="密码">
+      </div>
+      <div class="block">
+        <label for="password"><i class="iconfont icon-lock"></i> 确认密码</label>
+        <input type="password" autocomplete="off" class="password" id="passwordRepeat" placeholder="重复你的密码">
+      </div>
+      <div class="block" style="margin-top:20px;">
+        <a class="btn btn-lg" href="/login?rdt=<%= rdt %>">登录</a>
+        <button class="btn btn-lg guide register">注册</button>
+      </div>
+    </div>
+    <script>
+      var rdt = '<%= rdt %>';
+      var xhr = new XMLHttpRequest();
+      var httpEnd = function(xhr) {
+        if (xhr.readyState === 4) {
+          var head = xhr.getAllResponseHeaders();
+          var response = xhr.responseText;
+          // 转化成json
+          if (/^(\{|\[)([\s\S])*?(\]|\})$/.test(response)) {
+            response = JSON.parse(response);
+          }
+          if (xhr.status == 200) {
+            if (response.code === 0) {
+              window.location.href = rdt;
+            } else {
+              document.querySelector('.msg').innerHTML = response.msg;
+            }
+          } else {
+            document.querySelector('.msg').innerHTML = '网络错误，请稍后重试';
+          }
+        }
+      };
+      var handler = function(event) {
+        var userName = document.querySelector('.user-name').value;
+        if (!userName) {
+          document.querySelector('.msg').innerHTML = '用户名密码不能为空';
+          return;
+        }
+        var sex = document.querySelector('label.checkbox.checked').getAttribute('data-value') || 'male';
+        var email = document.querySelector('.email').value;
+        var tel = document.querySelector('.tel').value;
+        if (!email && !tel) {
+          document.querySelector('.msg').innerHTML = '邮箱或手机号不能为空';
+          return;
+        }
+        var password = document.querySelector('#password').value;
+        var passwordRepeat = document.querySelector('#passwordRepeat').value;
+        if (!password) {
+          document.querySelector('.msg').innerHTML = '密码不能为空';
+          return;
+        } else if(password !== passwordRepeat) {
+          document.querySelector('.msg').innerHTML = '两次密码必须相同';
+          return;
+        }
+        var postParam = {
+          name: userName,
+          sex: sex,
+          email: email,
+          tel: tel,
+          password: passwordRepeat
+        };
+        var postArr = [];
+        for (var key in postParam) {
+          postArr.push(key + '=' + postParam[key]);
+        }
+        try {
+          xhr.open('POST', '/user/register', true);
+          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          xhr.send(postArr.join('&'));
+        } catch (e) {
+          httpEnd(xhr);
+        }
+      };
+      xhr.addEventListener('readystatechange', function(xhr) {
+        httpEnd(this);
+      }, false);
+
+      document.querySelector('button.register').addEventListener('click', handler, false);
+      document.querySelector('label.checkbox[data-value="male"]').addEventListener('click', function(event) {
+        var other = document.querySelector('label.checkbox[data-value="female"]');
+        other.className = 'checkbox';
+        other.querySelector('i').className = 'iconfont icon-square';
+        this.className = 'checkbox checked';
+        this.querySelector('i').className = 'iconfont icon-squarecheck';
+      }, false);
+      document.querySelector('label.checkbox[data-value="female"]').addEventListener('click', function(event) {
+        var other = document.querySelector('label.checkbox[data-value="male"]');
+        other.className = 'checkbox';
+        other.querySelector('i').className = 'iconfont icon-square';
+        this.className = 'checkbox checked';
+        this.querySelector('i').className = 'iconfont icon-squarecheck';
+      }, false);
+    </script>
+  </body>
+</html>
