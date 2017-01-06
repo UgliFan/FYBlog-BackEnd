@@ -62,8 +62,8 @@ class Users extends Component {
     return (
       <div className={this.props.sideBarStatus ? 'users-container wide' : 'users-container'}>
         {
-          this.state.list.map((user, index) => {
-            return <UserRow key={index} user={user} settingStatus={this.props.settingStatus} propChange={(key, url) => this.propChange(key, url)} groupList={this.state.groupList} />
+          this.state.list.map((userInfo, index) => {
+            return <UserRow key={userInfo._id} user={userInfo} settingStatus={this.props.settingStatus} propChange={(key, url) => this.propChange(key, url)} groupList={this.state.groupList}/>
           })
         }
       </div>

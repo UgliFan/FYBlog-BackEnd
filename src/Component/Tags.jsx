@@ -22,7 +22,7 @@ class Tags extends Component {
   }
   render() {
     return (
-      <div></div>
+      <div className={this.props.sideBarStatus ? 'tag-container wide' : 'tag-container'}></div>
     );
   }
 }

@@ -100,7 +100,7 @@ class Main extends Component {
       <div className={this.props.sideBarStatus ? 'blog-container wide' : 'blog-container'}>
         {
           this.state.list.map((blog, index) => {
-            return <BlogRow key={index} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
+            return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
           })
         }
       </div>

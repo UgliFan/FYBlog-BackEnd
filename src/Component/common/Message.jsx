@@ -28,7 +28,6 @@ function notice(
     style: {},
     content: (
       <div className={`${prefixCls} ${prefixCls}-${type}`}>
-        <Icon type={iconType} />
         <span>{content}</span>
       </div>
     ),

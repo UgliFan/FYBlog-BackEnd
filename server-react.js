@@ -12,10 +12,22 @@ var serverDev = new WebpackDevServer(webpack(webpackConfig), {
 		colors: true
 	},
   proxy: [{
-    context: ['/css/**','/images/**','/assets/**','/js/**','/blog/**','/user/**','/group/**'],
+    context: ['/css/**','/images/**','/assets/**','/js/**','/blog/**','/user/**','/group/**','/tag_type/**','/tag/**'],
+    target: 'http://localhost:8823',
+    secure: false
+  }, {
+    path: '/login',
+    target: 'http://localhost:8823',
+    secure: false
+  }, {
+    path: '/register',
     target: 'http://localhost:8823',
     secure: false
   }]
+});
+
+serverDev.app.get('/',function(req, res) {
+	res.sendFile(__dirname + '/index.html')
 });
 
 serverDev.listen(8824, function() {

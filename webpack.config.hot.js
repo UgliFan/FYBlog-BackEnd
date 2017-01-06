@@ -6,7 +6,7 @@ var env = process.env.NODE_ENV || 'development';
 var ROOT_PATH = path.resolve(__dirname),
     APP_PATH = path.resolve(ROOT_PATH, 'src'),
     APP_FILE = path.resolve(APP_PATH, 'App.jsx'),
-    BUILD_PATH = path.resolve(ROOT_PATH, 'static');
+    BUILD_PATH = path.resolve(ROOT_PATH, 'dest');
 
 module.exports = {
   entry: {
