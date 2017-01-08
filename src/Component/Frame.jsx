@@ -14,7 +14,7 @@ import SideBar from './common/SideBar'
 //@pureRender
 class Frame extends Component {
   filterChange(filter) {
-    filter.callBack && filter.callBack();
+    filter.callBack && filter.callBack(filter.index);
   }
   toolAction(action, dispatch) {
     dispatch(Action[action]());
@@ -37,7 +37,7 @@ class Frame extends Component {
             return (
               <div
                 className={'filter-item' + (filter.on ? ' on': '')}
-                key={index} onClick={() => dispatch(Action.selectFilter(index)) && this.filterChange(filter)}>
+                key={index} onClick={() => dispatch(Action.selectFilter(filter.index)) && this.filterChange(filter)}>
                 <i className="iconfont icon-filter"></i>
                 {filter.name}
               </div>

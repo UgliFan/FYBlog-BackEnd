@@ -9,7 +9,8 @@ import {
   SELECT_FILTER,
   SET_TOOLBAR,
   SETTING_TOGGLE,
-  INDEX_SCROLL_POS
+  SET_INDEX_SCROLL_POS,
+  SET_TAG_SCROLL_POS
 } from '../Action/Index'
 
 import {
@@ -23,7 +24,16 @@ import {
 
 export function indexScrollPos(state = 0, action) {
   switch (action.type) {
-    case INDEX_SCROLL_POS:
+    case SET_INDEX_SCROLL_POS:
+      return action.pos;
+    default:
+      return state;
+  }
+}
+
+export function tagScrollPos(state = 0, action) {
+  switch (action.type) {
+    case SET_TAG_SCROLL_POS:
       return action.pos;
     default:
       return state;
@@ -68,7 +78,7 @@ export function currentFilters(state = [], action) {
     case SELECT_FILTER:
       return state.map((filter, index) => {
         return Object.assign({}, filter, {
-          on: index === action.index
+          on: filter.index === action.index
         })
       });
     default:

@@ -16,19 +16,22 @@ class Main extends Component {
     super();
     this.state = {
       filters: [{
+        index: 0,
         name:'全部',
         on:true,
-        callBack: this.refreshList
+        callBack: (index) => this.refreshList(index)
       },{
+        index: 1,
         name: '未锁',
         key: 'isOff',
         value: false,
-        callBack: this.refreshList
+        callBack: (index) => this.refreshList(index)
       },{
+        index: 2,
         name: '已锁',
         key: 'isOff',
         value: true,
-        callBack: this.refreshList
+        callBack: (index) => this.refreshList(index)
       }],
       toolBar: [{
         type: 'link',
@@ -51,10 +54,10 @@ class Main extends Component {
       });
     });
   }
-  refreshList() {
+  refreshList(index) {
     var param = {};
-    this.props.currentFilters.forEach((filter, index) => {
-      if (filter.on && filter.key) {
+    this.props.currentFilters.forEach((filter, i) => {
+      if (filter.index === index && filter.key) {
         param[filter.key.toLowerCase()] = filter.value;
       }
     });
@@ -69,11 +72,7 @@ class Main extends Component {
     this.props.dispatch(changeMenu(1));
     this.props.dispatch(setFilters(this.state.filters));
     this.props.dispatch(setToolBar(this.state.toolBar));
-    this.props.dispatch(fetchGets('/blog/page', {}, (list) => {
-      this.setState({
-        list: list
-      });
-    }, 'BlogList'));
+    this.refreshList();
   }
   componentDidUpdate() {
     document.body.scrollTop = this.props.indexScrollPos;
@@ -100,7 +99,7 @@ class Main extends Component {
       <div className={this.props.sideBarStatus ? 'blog-container wide' : 'blog-container'}>
         {
           this.state.list.map((blog, index) => {
-            return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url, params) => this.blogPropChange(key, url, params)}/>
+            return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url) => this.blogPropChange(key, url)}/>
           })
         }
       </div>

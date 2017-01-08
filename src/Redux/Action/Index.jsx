@@ -4,7 +4,8 @@ export const SET_FILTERS = 'SET_FILTERS';
 export const SELECT_FILTER = 'SELECT_FILTER';
 export const SET_TOOLBAR = 'SET_TOOLBAR';
 export const SETTING_TOGGLE = 'SETTING_TOGGLE';
-export const INDEX_SCROLL_POS = 'INDEX_SCROLL_POS';
+export const SET_INDEX_SCROLL_POS = 'SET_INDEX_SCROLL_POS';
+export const SET_TAG_SCROLL_POS = 'SET_TAG_SCROLL_POS';
 
 export const MenuList = [{
   key: 1,
@@ -58,5 +59,9 @@ export function toggleSetting() {
 }
 
 export function setIndexScrollPos(pos) {
-  return { type: INDEX_SCROLL_POS, pos };
+  return { type: SET_INDEX_SCROLL_POS, pos };
+}
+
+export function setTagScrollPos(pos) {
+  return { type: SET_TAG_SCROLL_POS, pos };
 }
