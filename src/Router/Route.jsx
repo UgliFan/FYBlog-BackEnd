@@ -18,6 +18,12 @@ const Tags = (location, cb) => {
     },'Tags')
 };
 
+const TagEdit = (location, cb) => {
+    require.ensure([], require => {
+        cb(null, require('../Component/TagEdit').default)
+    },'TagEdit')
+};
+
 const Comments = (location, cb) => {
     require.ensure([], require => {
         cb(null, require('../Component/Comments').default)
@@ -37,7 +43,8 @@ const RouteConfig = (
       <Route path="blogs" component={ Index } />
       <Route path="blogs/edit(/:id)" getComponent={ BlogEdit } />
       <Route path="tags" getComponent={ Tags } />
-      <Route path="comments" getComponent={ Comments } />
+      <Route path="tags/edit(/:id)" getComponent={ TagEdit } />
+      <Route path="comments(/:topic_id)" getComponent={ Comments } />
       <Route path="users" getComponent={ Users } />
       <Redirect from="*" to="/" />
     </Route>

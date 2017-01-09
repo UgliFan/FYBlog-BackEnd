@@ -13,6 +13,9 @@ router.get('/page', function(req, res, next) {
   var _key = req.query._key || '';
   var s = req.query.s || '';
   if (_key && s) queryParams[_key] = eval('/' + s + '/i');
+  if (req.query.type !== undefined) {
+    queryParams.type = req.query.type;
+  }
   TagDao.page(queryParams, sortParams, pageNum, pageSize).then(function(tags) {
     res.status(200).json({ code: 0, result: tags });
   }).catch(function(error) {

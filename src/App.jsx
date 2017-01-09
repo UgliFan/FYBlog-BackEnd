@@ -8,6 +8,8 @@ import './Libs/Config'//引入默认配置
 import './Styles/index.scss'
 import './Styles/blog.scss'
 import './Styles/blog-edit.scss'
+import './Styles/tag.scss'
+import './Styles/comment.scss'
 import './Styles/users.scss'
 
 let unsubscribe = store.subscribe(() => { //监听state变化

@@ -1,6 +1,6 @@
 @import "variable.scss";
 
-.blog-container {
+.tag-container {
   padding-left: $sideBarWidth;
   padding-top: $headerHeight;
   transition: all $transSpace ease;
@@ -9,6 +9,93 @@
   }
 
   .tag-item {
-    
+    width: 50%;
+    height: 80px;
+    line-height: 60px;
+    font-size:  20px;
+    padding: 10px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    h4 {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      right: 10px;
+      line-height: 40px;
+      font-weight: 700;
+      font-size: 18px;
+      color: $black;
+      padding: 0 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    span {
+      display: inline-block;
+      position: absolute;
+      left: 40px;
+      bottom: 10px;
+      line-height: 20px;
+      font-weight: 500;
+      color: $fontGray;
+      font-size: 12px;
+      padding: 0 10px;
+      border: 1px solid #eee;
+      border-radius: $borderRadius;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tag-edit {
+      cursor: pointer;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: $boxShadowDark;
+      top: 20px;
+      right: 60px;
+      text-align: center;
+      line-height: 40px;
+      transform: scale(0);
+      transition: transform $transSpace ease;
+      background: $white;
+      &:hover {
+        box-shadow: $boxShadowHover;
+        color: $blueLight;
+      }
+    }
+    .tag-delete {
+      cursor: pointer;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: $boxShadowDark;
+      top: 20px;
+      right: 10px;
+      text-align: center;
+      line-height: 40px;
+      transform: scale(0);
+      background: $white;
+      transition: transform $transSpace ease;
+      &:hover {
+        box-shadow: $boxShadowHover;
+        color: $blueLight;
+      }
+    }
+    a {
+      color: $fontGrayst;
+      text-decoration: none;
+    }
+    &:hover, &:focus, &:active, &.hover {
+      .tag-edit {
+        transform: scale(1);
+      }
+      .tag-delete {
+        transform: scale(1);
+      }
+    }
   }
 }
