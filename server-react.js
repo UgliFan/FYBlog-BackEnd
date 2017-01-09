@@ -12,7 +12,18 @@ var serverDev = new WebpackDevServer(webpack(webpackConfig), {
 		colors: true
 	},
   proxy: [{
-    context: ['/css/**','/images/**','/assets/**','/js/**','/blog/**','/user/**','/group/**','/tag_type/**','/tag/**'],
+    context: [
+      '/css/**',
+      '/images/**',
+      '/assets/**',
+      '/js/**',
+      '/blog/**',
+      '/user/**',
+      '/group/**',
+      '/tag_type/**',
+      '/tag/**',
+      '/comment/**'
+    ],
     target: 'http://localhost:8823',
     secure: false
   }, {

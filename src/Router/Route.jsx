@@ -44,7 +44,7 @@ const RouteConfig = (
       <Route path="blogs/edit(/:id)" getComponent={ BlogEdit } />
       <Route path="tags" getComponent={ Tags } />
       <Route path="tags/edit(/:id)" getComponent={ TagEdit } />
-      <Route path="comments" getComponent={ Comments } />
+      <Route path="comments(/:topic_id)" getComponent={ Comments } />
       <Route path="users" getComponent={ Users } />
       <Redirect from="*" to="/" />
     </Route>

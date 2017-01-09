@@ -60,6 +60,7 @@
       line-height: 40px;
       transform: scale(0);
       transition: transform $transSpace ease;
+      background: $white;
       &:hover {
         box-shadow: $boxShadowHover;
         color: $blueLight;
@@ -77,6 +78,7 @@
       text-align: center;
       line-height: 40px;
       transform: scale(0);
+      background: $white;
       transition: transform $transSpace ease;
       &:hover {
         box-shadow: $boxShadowHover;

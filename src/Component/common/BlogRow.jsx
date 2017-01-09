@@ -21,7 +21,7 @@ export default class BlogRow extends Component {
           <div className='item'><i className='iconfont icon-profile'></i><span>{ blog.author }</span></div>
           <div className='item'><i className='iconfont icon-location'></i><span>{ Tool.numberFormat(blog.visit_count) }</span></div>
           <div className='item'><i className='iconfont icon-appreciate'></i><span>{ Tool.numberFormat(blog.zan_count) }</span></div>
-          <div className='item'><i className='iconfont icon-comment'></i><span>{ Tool.numberFormat(blog.reply_count) }</span></div>
+          <Link to={`/comments/${blog._id}`}><div className='item'><i className='iconfont icon-comment'></i><span>{ Tool.numberFormat(blog.reply_count) }</span></div></Link>
         </div>
         <div className='blog-actions'>
           <Link to={`/blogs/edit/${blog._id}`}><div className='action'><i className='iconfont icon-write'></i></div></Link>
