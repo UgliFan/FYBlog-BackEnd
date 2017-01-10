@@ -130,7 +130,7 @@
         text-decoration: none;
       }
     }
-    &:hover, &:focus, &:active, &.hover {
+    &:hover, &.hover {
       .user-actions {
         transform: translateX(0);
       }
