@@ -202,7 +202,7 @@ nav {
   opacity: 0;
   transition: opacity $transSpaceFast ease;
   .confirm-body {
-    position: relative;
+    position: absolute;
     display: inline-block;
     top: 50%;
     left: 50%;
