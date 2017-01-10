@@ -137,7 +137,7 @@
         text-decoration: none;
       }
     }
-    &:hover, &:focus, &:active, &.hover {
+    &:hover, &.hover {
       .blog-actions {
         transform: translateX(0);
       }

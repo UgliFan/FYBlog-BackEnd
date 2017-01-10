@@ -159,7 +159,7 @@
         color: $blueLight;
       }
     }
-    &:hover, &:focus, &:active, &.hover {
+    &:hover, &.hover {
       .action-delete {
         transform: scale(1);
       }
