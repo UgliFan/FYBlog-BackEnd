@@ -3,6 +3,9 @@
   outline: 0;
   -webkit-appearance: none;
 }
+.lflogo-container * {
+  box-sizing: content-box;
+}
 html {
   height: 100%;
 }
