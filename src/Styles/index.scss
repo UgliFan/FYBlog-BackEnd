@@ -11,6 +11,7 @@ header {
   box-shadow: $boxShadow;
   color: $white;
   z-index: $level9;
+  -webkit-appearance: none;
   .side-toggle {
     position: relative;
     top: -13px;
@@ -22,6 +23,7 @@ header {
     border-radius: 50%;
     margin-right: 20px;
     box-shadow: $boxShadow;
+    -webkit-appearance: none;
     img {
       border: none;
       width: 100%;
@@ -43,6 +45,7 @@ header {
       color: #666;
       box-shadow: $boxShadow;
       transition: transform $transSpace ease;
+      -webkit-appearance: none;
     }
   }
   h1 {
@@ -88,6 +91,7 @@ nav {
   background: #fbfbfb;
   transform: translateX(0);
   transition: transform $transSpace ease;
+  -webkit-appearance: none;
   ul {
     a {
       color: $black;
@@ -137,6 +141,7 @@ nav {
     box-shadow: $boxShadow;
     cursor: pointer;
     transition: all $transSpace ease;
+    -webkit-appearance: none;
     &.on {
       color: $white;
       background: rgba(0, 126, 255, 0.86);
@@ -165,6 +170,7 @@ nav {
   border-radius: $borderRadius;
   box-shadow: $boxShadow;
   z-index: $level10;
+  -webkit-appearance: none;
   i {
     margin-right: 10px;
   }
@@ -209,6 +215,7 @@ nav {
     border-radius: $borderRadius;
     box-shadow: $boxShadow;
     z-index: $level10;
+    -webkit-appearance: none;
     .confirm-title {
       height: 30px;
       line-height: 1;
@@ -243,6 +250,7 @@ nav {
         color: $fontGrayst;
         border-radius: $borderRadius;
         box-shadow: $boxShadow;
+        -webkit-appearance: none;
       }
     }
   }
