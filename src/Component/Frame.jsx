@@ -10,6 +10,8 @@ import * as Action from '../Redux/Action/Index'
 
 import Header from './common/Header'
 import SideBar from './common/SideBar'
+import Message from './common/Message'
+import Confirm from './common/Confirm'
 
 //@pureRender
 class Frame extends Component {
@@ -19,8 +21,14 @@ class Frame extends Component {
   toolAction(action, dispatch) {
     dispatch(Action[action]());
   }
+  hideMessage(dispatch) {
+    dispatch(Action.hideMessage());
+  }
+  confirmCancel(dispatch) {
+    dispatch(Action.closeConfirmDialog());
+  }
   render() {
-    const { dispatch, sideBarStatus, menuStatus, toolBar } = this.props;
+    const { dispatch, sideBarStatus, menuStatus, toolBar, msgInfo, confirmConf } = this.props;
     return (
       <div>
         <Header
@@ -44,6 +52,8 @@ class Frame extends Component {
             );
           })}
         </div>
+        <Message info={msgInfo} msgHide={() => this.hideMessage(dispatch)}/>
+        { confirmConf.title ? <Confirm config={confirmConf} onCancel={() => this.confirmCancel(dispatch)}/> : null }
       </div>
     );
   }
@@ -53,7 +63,9 @@ Frame.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
   menuStatus: PropTypes.array.isRequired,
   currentFilters: PropTypes.array.isRequired,
-  toolBar: PropTypes.array.isRequired
+  toolBar: PropTypes.array.isRequired,
+  msgInfo: PropTypes.object.isRequired,
+  confirmConf: PropTypes.object.isRequired
 };
 
 function select(state) {
@@ -61,7 +73,9 @@ function select(state) {
     sideBarStatus: state.sideBarToggle,
     menuStatus: state.menuStatus,
     currentFilters: state.currentFilters,
-    toolBar: state.currentToolBar
+    toolBar: state.currentToolBar,
+    msgInfo: state.messageInfo,
+    confirmConf: state.confirmInfo
   };
 }
 

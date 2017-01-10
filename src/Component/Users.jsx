@@ -7,7 +7,14 @@ import { Tool } from '../Libs/Tool'
 
 import UserRow from './common/UserRow'
 
-import { changeMenu, setFilters, setToolBar } from '../Redux/Action/Index'
+import {
+  changeMenu,
+  setFilters,
+  setToolBar,
+  showMessage,
+  setConfirmDialog,
+  closeConfirmDialog
+} from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
 //@pureRender
@@ -34,18 +41,36 @@ class Users extends Component {
     }, 'UserList'));
   }
   propChange(key, url) {
-    Tool.get('/token').then(data => {
-      let postData ={
-        token: data.token
-      };
-      Tool.post(url + '/' + key, postData).then(data => {
-        this.refreshList();
-      }).catch(err => {
-        console.log('error', err);
-      });
-    }).catch(err => {
-      console.log('get Token error', err);
-    });
+    this.props.dispatch(setConfirmDialog({
+      title: '确认修改属性？',
+      confirmCallback: () => {
+        this.props.dispatch(closeConfirmDialog());
+        Tool.get('/token').then(data => {
+          let postData ={
+            token: data.token
+          };
+          Tool.post(url + '/' + key, postData).then(data => {
+            this.props.dispatch(showMessage({
+              type: data.code === 0 ? 'success' : 'warn',
+              text: data.msg
+            }));
+            if (data.code === 0) {
+              this.refreshList();
+            }
+          }).catch(err => {
+            this.props.dispatch(showMessage({
+              type: 'danger',
+              text: '网络错误，请稍后重试'
+            }));
+          });
+        }).catch(err => {
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
+        });
+      }
+    }));
   }
   componentWillMount() {
     this.props.dispatch(changeMenu(4));

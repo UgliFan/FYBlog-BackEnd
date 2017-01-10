@@ -6,7 +6,10 @@ import { Tool } from '../Libs/Tool'
 
 import {
   setFilters,
-  setToolBar
+  setToolBar,
+  showMessage,
+  setConfirmDialog,
+  closeConfirmDialog
 } from '../Redux/Action/Index'
 
 class BlogEdit extends Component {
@@ -23,7 +26,13 @@ class BlogEdit extends Component {
         name: '保存',
         icon: 'iconfont icon-check',
         callBack: () => {
-          this.dataPost();
+          this.props.dispatch(setConfirmDialog({
+            title: '确认要保存吗？',
+            confirmCallback: () => {
+              this.props.dispatch(closeConfirmDialog());
+              this.dataPost();
+            }
+          }));
         }
       }],
       postData: {
@@ -41,20 +50,40 @@ class BlogEdit extends Component {
       if (this.props.params.id) {
         postData.id = this.props.params.id;
         Tool.post('/blog/set', postData).then(data => {
-          console.log('success', this.props);
-          this.props.router.push('/blogs');
+          this.props.dispatch(showMessage({
+            type: data.code === 0 ? 'success' : 'warn',
+            text: data.msg
+          }));
+          if (data.code === 0) {
+            this.props.router.push('/blogs');
+          }
         }).catch(err => {
-          console.log('error', err);
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
         });
       } else {
         Tool.post('/blog/new', postData).then(data => {
-          this.props.router.push('/blogs');
+          this.props.dispatch(showMessage({
+            type: data.code === 0 ? 'success' : 'warn',
+            text: data.msg
+          }));
+          if (data.code === 0) {
+            this.props.router.push('/blogs');
+          }
         }).catch(err => {
-          console.log('error', err);
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
         });
       }
     }).catch(err => {
-      console.log('get Token error', err);
+      this.props.dispatch(showMessage({
+        type: 'danger',
+        text: '网络错误，请稍后重试'
+      }));
     });
 
   }
@@ -82,7 +111,10 @@ class BlogEdit extends Component {
           }
         });
       }).catch(err => {
-        console.log('get error', err);
+        this.props.dispatch(showMessage({
+          type: 'danger',
+          text: '网络错误，请稍后重试'
+        }));
       });
     }
   }

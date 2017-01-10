@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1483542052089'); /* IE9*/
-  src: url('iconfont.eot?t=1483542052089#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1483542052089') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1483542052089') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1483542052089#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1484040942809'); /* IE9*/
+  src: url('iconfont.eot?t=1484040942809#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1484040942809') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1484040942809') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1484040942809#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -31,6 +31,14 @@
 .icon-locationfill:before { content: "\e650"; }
 
 .icon-location:before { content: "\e651"; }
+
+.icon-roundcheckfill:before { content: "\e656"; }
+
+.icon-roundcheck:before { content: "\e657"; }
+
+.icon-roundclosefill:before { content: "\e658"; }
+
+.icon-roundclose:before { content: "\e659"; }
 
 .icon-search:before { content: "\e65c"; }
 

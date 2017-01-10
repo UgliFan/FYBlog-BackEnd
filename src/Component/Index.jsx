@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import pureRender from 'pure-render-decorator'
 import { History, Link } from 'react-router'
 import { connect } from 'react-redux'
 import { is, fromJS } from 'immutable'
@@ -7,10 +6,18 @@ import { Tool } from '../Libs/Tool'
 
 import BlogRow from './common/BlogRow'
 
-import { changeMenu, setFilters, setToolBar, setIndexScrollPos } from '../Redux/Action/Index'
+import {
+  changeMenu,
+  setFilters,
+  setToolBar,
+  setIndexScrollPos,
+  showMessage,
+  setConfirmDialog,
+  closeConfirmDialog
+} from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
-//@pureRender
+
 class Main extends Component {
   constructor() {
     super();
@@ -48,11 +55,28 @@ class Main extends Component {
     };
   }
   deleteBlog(id) {
-    Tool.get('/token').then(data => {
-      Tool.post(`/blog/remove/${id}`,{token: data.token}).then(data => {
-        this.refreshList();
-      });
-    });
+    this.props.dispatch(setConfirmDialog({
+      title: '确认删除？',
+      confirmCallback: () => {
+        this.props.dispatch(closeConfirmDialog());
+        Tool.get('/token').then(data => {
+          Tool.post(`/blog/remove/${id}`,{token: data.token}).then(data => {
+            this.props.dispatch(showMessage({
+              type: data.code === 0 ? 'success' : 'warn',
+              text: data.msg
+            }));
+            if (data.code === 0) {
+              this.refreshList();
+            }
+          }).catch(err => {
+            this.props.dispatch(showMessage({
+              type: 'danger',
+              text: '网络错误，请稍后重试'
+            }));
+          });
+        });
+      }
+    }));
   }
   refreshList(index) {
     var param = {};
@@ -81,18 +105,36 @@ class Main extends Component {
     this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
   }
   blogPropChange(key, url) {
-    Tool.get('/token').then(data => {
-      let postData ={
-        token: data.token
-      };
-      Tool.post(url + '/' + key, postData).then(data => {
-        this.refreshList();
-      }).catch(err => {
-        console.log('error', err);
-      });
-    }).catch(err => {
-      console.log('get Token error', err);
-    });
+    this.props.dispatch(setConfirmDialog({
+      title: '确认修改属性？',
+      confirmCallback: () => {
+        this.props.dispatch(closeConfirmDialog());
+        Tool.get('/token').then(data => {
+          let postData ={
+            token: data.token
+          };
+          Tool.post(url + '/' + key, postData).then(data => {
+            this.props.dispatch(showMessage({
+              type: data.code === 0 ? 'success' : 'warn',
+              text: data.msg
+            }));
+            if (data.code === 0) {
+              this.refreshList();
+            }
+          }).catch(err => {
+            this.props.dispatch(showMessage({
+              type: 'danger',
+              text: '网络错误，请稍后重试'
+            }));
+          });
+        }).catch(err => {
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
+        });
+      }
+    }));
   }
   render() {
     return (

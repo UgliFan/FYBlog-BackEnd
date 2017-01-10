@@ -10,7 +10,11 @@ import {
   SET_TOOLBAR,
   SETTING_TOGGLE,
   SET_INDEX_SCROLL_POS,
-  SET_TAG_SCROLL_POS
+  SET_TAG_SCROLL_POS,
+  SHOW_MESSAGE,
+  HIDE_MESSAGE,
+  SET_CONFIRM_DIALOG,
+  CLOSE_CONFIRM_DIALOG
 } from '../Action/Index'
 
 import {
@@ -44,6 +48,28 @@ export function sideBarToggle(state = (System ? true : false), action) {
   switch (action.type) {
     case SIDE_BAR_TOGGLE:
       return !state;
+    default:
+      return state;
+  }
+}
+
+export function messageInfo(state = { type: 'info', text: ''}, action) {
+  switch (action.type) {
+    case SHOW_MESSAGE:
+      return action.info;
+    case HIDE_MESSAGE:
+      return { type: 'info', text: ''};
+    default:
+      return state;
+  }
+}
+
+export function confirmInfo(state = { title: '' }, action) {
+  switch (action.type) {
+    case SET_CONFIRM_DIALOG:
+      return action.info;
+    case CLOSE_CONFIRM_DIALOG:
+      return { title: '' };
     default:
       return state;
   }

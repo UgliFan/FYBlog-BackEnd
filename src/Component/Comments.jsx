@@ -4,7 +4,14 @@ import { connect } from 'react-redux'
 import { is, fromJS } from 'immutable'
 import { Tool } from '../Libs/Tool'
 
-import { changeMenu, setFilters, setToolBar } from '../Redux/Action/Index'
+import {
+  changeMenu,
+  setFilters,
+  setToolBar,
+  showMessage,
+  setConfirmDialog,
+  closeConfirmDialog
+} from '../Redux/Action/Index'
 import { fetchGets } from '../Redux/Action/Data'
 
 import CommentRow from './common/CommentRow'
@@ -92,11 +99,33 @@ class Comments extends Component {
     this.refreshList(topicId);
   }
   deleteComment(id) {
-    Tool.get('/token').then(data => {
-      Tool.post(`/comment/remove/${id}`,{token: data.token}).then(data => {
-        this.refreshList(this.state.topicId);
-      });
-    });
+    this.props.dispatch(setConfirmDialog({
+      title: '确认删除？',
+      confirmCallback: () => {
+        this.props.dispatch(closeConfirmDialog());
+        Tool.get('/token').then(data => {
+          Tool.post(`/comment/remove/${id}`,{token: data.token}).then(data => {
+            this.props.dispatch(showMessage({
+              type: data.code === 0 ? 'success' : 'warn',
+              text: data.msg
+            }));
+            if (data.code === 0) {
+              this.refreshList(this.state.topicId);
+            }
+          }).catch(err => {
+            this.props.dispatch(showMessage({
+              type: 'danger',
+              text: '网络错误，请稍后重试'
+            }));
+          });
+        }).catch(err => {
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
+        });
+      }
+    }));
   }
   render() {
     return (
