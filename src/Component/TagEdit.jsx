@@ -6,7 +6,10 @@ import { Tool } from '../Libs/Tool'
 
 import {
   setFilters,
-  setToolBar
+  setToolBar,
+  showMessage,
+  setConfirmDialog,
+  closeConfirmDialog
 } from '../Redux/Action/Index'
 
 class TagEdit extends Component {
@@ -23,7 +26,13 @@ class TagEdit extends Component {
         name: '保存',
         icon: 'iconfont icon-check',
         callBack: () => {
-          this.dataPost();
+          this.props.dispatch(setConfirmDialog({
+            title: '确认要保存嘛？',
+            confirmCallback: () => {
+              this.props.dispatch(closeConfirmDialog());
+              this.dataPost();
+            }
+          }));
         }
       }],
       postData: {
@@ -39,19 +48,40 @@ class TagEdit extends Component {
       if (this.props.params.id) {
         postData.id = this.props.params.id;
         Tool.post('/tag/set', postData).then(data => {
-          this.props.router.push('/tags');
+          this.props.dispatch(showMessage({
+            type: data.code === 0 ? 'success' : 'warn',
+            text: data.msg
+          }));
+          if (data.code === 0) {
+            this.props.router.push('/tags');
+          }
         }).catch(err => {
-          console.log('error', err);
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
         });
       } else {
         Tool.post('/tag/new', postData).then(data => {
-          this.props.router.push('/tags');
+          this.props.dispatch(showMessage({
+            type: data.code === 0 ? 'success' : 'warn',
+            text: data.msg
+          }));
+          if (data.code === 0) {
+            this.props.router.push('/tags');
+          }
         }).catch(err => {
-          console.log('error', err);
+          this.props.dispatch(showMessage({
+            type: 'danger',
+            text: '网络错误，请稍后重试'
+          }));
         });
       }
     }).catch(err => {
-      console.log('get Token error', err);
+      this.props.dispatch(showMessage({
+        type: 'danger',
+        text: '网络错误，请稍后重试'
+      }));
     });
 
   }
@@ -77,7 +107,10 @@ class TagEdit extends Component {
           }
         });
       }).catch(err => {
-        console.log('get error', err);
+        this.props.dispatch(showMessage({
+          type: 'danger',
+          text: '网络错误，请稍后重试'
+        }));
       });
     }
   }

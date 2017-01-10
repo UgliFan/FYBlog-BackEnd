@@ -147,3 +147,109 @@ nav {
     }
   }
 }
+
+.global-message {
+  position: fixed;
+  display: inline-block;
+  top: 15px;
+  left: 50%;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: translate(-50%, -50px);
+  padding: 5px 20px;
+  background-color: rgba(255,255,255,.98);
+  font-size: 12px;
+  transition: transform $transSpace ease;
+  border-radius: $borderRadius;
+  box-shadow: $boxShadow;
+  z-index: $level10;
+  i {
+    margin-right: 10px;
+  }
+  &.danger {
+    color: $colorDanger;
+  }
+  &.warn {
+    color: $colorWarning;
+  }
+  &.success {
+    color: $colorSuccess;
+  }
+  &.info {
+    color: $colorInfo;
+  }
+  &.msg-show {
+    transform: translate(-50%, 0);
+  }
+}
+
+.global-confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0,0,0,.6);
+  z-index: $level10;
+  opacity: 0;
+  transition: opacity $transSpaceFast ease;
+  .confirm-body {
+    position: relative;
+    display: inline-block;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    overflow: hidden;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform $transSpaceFast ease;
+    padding: 20px;
+    background-color: $white;
+    border-radius: $borderRadius;
+    box-shadow: $boxShadow;
+    z-index: $level10;
+    .confirm-title {
+      height: 30px;
+      line-height: 1;
+      font-size: 18px;
+      font-weight: 700;
+      color: $fontGrayst;
+    }
+    .confirm-text {
+      font-size: 14px;
+      line-height:20px;
+      color: $fontGray;
+      word-wrap: break-word;
+      word-break: break-all;
+      i {
+        margin-right: 10px;
+      }
+    }
+    .action-btns {
+      margin-top: 20px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      a {
+        display: inline-block;
+        text-decoration: none;
+        vertical-align: top;
+        height: 30px;
+        margin: 0 20px;
+        padding: 5px 20px;
+        line-height: 20px;
+        font-size: 14px;
+        color: $fontGrayst;
+        border-radius: $borderRadius;
+        box-shadow: $boxShadow;
+      }
+    }
+  }
+  &.confirm-show {
+    opacity: 1;
+    .confirm-body {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+}

@@ -6,6 +6,10 @@ export const SET_TOOLBAR = 'SET_TOOLBAR';
 export const SETTING_TOGGLE = 'SETTING_TOGGLE';
 export const SET_INDEX_SCROLL_POS = 'SET_INDEX_SCROLL_POS';
 export const SET_TAG_SCROLL_POS = 'SET_TAG_SCROLL_POS';
+export const SHOW_MESSAGE = 'SHOW_MESSAGE';
+export const HIDE_MESSAGE = 'HIDE_MESSAGE';
+export const SET_CONFIRM_DIALOG = 'SET_CONFIRM_DIALOG';
+export const CLOSE_CONFIRM_DIALOG = 'CLOSE_CONFIRM_DIALOG';
 
 export const MenuList = [{
   key: 1,
@@ -64,4 +68,20 @@ export function setIndexScrollPos(pos) {
 
 export function setTagScrollPos(pos) {
   return { type: SET_TAG_SCROLL_POS, pos };
+}
+
+export function showMessage(info) {
+  return { type: SHOW_MESSAGE, info };
+}
+
+export function hideMessage() {
+  return { type: HIDE_MESSAGE };
+}
+
+export function setConfirmDialog(info) {
+  return { type: SET_CONFIRM_DIALOG, info };
+}
+
+export function closeConfirmDialog() {
+  return { type: CLOSE_CONFIRM_DIALOG };
 }

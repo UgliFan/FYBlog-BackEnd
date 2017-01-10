@@ -34,7 +34,7 @@ router.get('/get/:id', function(req, res, next) {
 router.post('/new', function(req, res, next) {
   var params = req.body;
   params.create_at = new Date().getTime();
-  TagDao.save(params).then(function() {
+  CommentDao.save(params).then(function() {
     res.status(200).json({ code: 0, msg: '保存成功' });
   }).catch(function(error) {
     next();
@@ -44,7 +44,7 @@ router.post('/new', function(req, res, next) {
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var _id = req.params.id;
-    TagDao.delete({_id: _id}).then(function() {
+    CommentDao.delete({_id: _id}).then(function() {
       res.status(200).json({ code: 0, msg: '删除成功' });
     }).catch(function(error) {
       next(error);
