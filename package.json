@@ -4,6 +4,7 @@
   "description": "api,management for fyblog",
   "main": "server.js",
   "scripts": {
+    "build": "export NODE_ENV=development;webpack",
     "dev": "export NODE_ENV=development;node server.js",
     "dev-react": "export NODE_ENV=development;node server-react.js",
     "server-start": "export NODE_ENV=production;forever start server.js",
@@ -46,6 +47,8 @@
     "jsx-loader": "^0.13.2",
     "node-sass": "^4.1.1",
     "postcss-loader": "^1.2.1",
+    "postcss-smart-import": "^0.6.7",
+    "precss": "^1.4.0",
     "pure-render-decorator": "^1.2.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
