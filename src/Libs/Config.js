@@ -15,11 +15,11 @@ import FastClick from './FastClick.js'
 })(document, window);
 
 // 装载FastClick
-if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', () => {
-    FastClick.attach(document.body);
-  }, false);
-}
+// if ('addEventListener' in document) {
+//   document.addEventListener('DOMContentLoaded', () => {
+//     FastClick.attach(document.body);
+//   }, false);
+// }
 
 const System = (() => {
   let u = navigator.userAgent;
