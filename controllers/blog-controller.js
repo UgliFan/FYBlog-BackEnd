@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var BlogDao = require('../dao/BlogsDao');
 var filters = require('../filters');
+var marked = require('marked');
 
 router.get('/page', function(req, res, next) {
   var sortParams = { top: -1 },
@@ -29,6 +30,15 @@ router.get('/page', function(req, res, next) {
 router.get('/get/:id', function(req, res, next) {
   var _id = req.params.id;
   BlogDao.getById(_id).then(function(blog) {
+    res.status(200).json({ code: 0, result: blog });
+  }).catch(function(error) {
+    next(error);
+  });
+});
+router.get('/get_html/:id', function(req, res, next) {
+  var _id = req.params.id;
+  BlogDao.getById(_id).then(function(blog) {
+    blog.content = marked(blog.content);
     res.status(200).json({ code: 0, result: blog });
   }).catch(function(error) {
     next(error);
