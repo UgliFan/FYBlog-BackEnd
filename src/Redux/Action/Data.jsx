@@ -49,10 +49,10 @@ const getDataStart = (path, name) => {
   };
 }
 
-const getDataSuccess = (path, list, success, name) => {
+const getDataSuccess = (path, list, success, name, total, page) => {
   return {
     type: GET_DATA_SUCCESS,
-    path, list, success, name
+    path, list, success, name, total, page
   };
 };
 
@@ -76,7 +76,7 @@ export function fetchGets(path, postData, success, name) {
     }).then(response => response.json())
     .then(json => {
       if (json.code === 0) {
-        dispatch(getDataSuccess(path, json.result, success, name));
+        dispatch(getDataSuccess(path, json.result, success, name, json.total, postData.pagenum || 0));
       } else {
         dispatch(getDataFail(path, name));
       }

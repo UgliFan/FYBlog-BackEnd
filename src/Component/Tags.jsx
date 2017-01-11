@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { is, fromJS } from 'immutable'
 import { Tool } from '../Libs/Tool'
 import TagItem from './common/TagItem'
+import LoadMore from './common/LoadMore'
 
 import {
   changeMenu,
@@ -23,25 +24,25 @@ class Tags extends Component {
         index: 0,
         name:'全部',
         on:true,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       },{
         index: 1,
         name: '系统预设',
         key: 'type',
         value: 0,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       },{
         index: 2,
         name: '自定义',
         key: 'type',
         value: 1,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       },{
         index: 3,
         name: '博文生成',
         key: 'type',
         value: 2,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       }],
       toolBar: [{
         type: 'link',
@@ -54,17 +55,25 @@ class Tags extends Component {
         icon: 'iconfont icon-settings',
         callBack: 'toggleSetting'
       }],
+      filterIndex: 0,
       list: [],
+      page: 0,
       typeList: []
     };
   }
-  refreshList(index) {
+  filterCallBack(index) {
+    this.setState({
+      filterIndex: index
+    });
+  }
+  refreshList() {
     var param = {};
     this.props.currentFilters.forEach((filter, i) => {
-      if (filter.index === index && filter.key) {
+      if (filter.index === this.state.filterIndex && filter.key) {
         param[filter.key.toLowerCase()] = filter.value;
       }
     });
+    param.pagenum = this.state.page;
     this.props.dispatch(setTagScrollPos(document.body.scrollTop));
     this.props.dispatch(fetchGets('/tag/page', param, (list) => {
       this.setState({
@@ -110,7 +119,6 @@ class Tags extends Component {
         typeList: list
       });
     }, 'TypeList'));
-    this.refreshList();
   }
   tagPropChange(key, url) {
     this.props.dispatch(setConfirmDialog({
@@ -146,16 +154,32 @@ class Tags extends Component {
   }
   componentDidUpdate() {
     document.body.scrollTop = this.props.tagScrollPos;
+    this.refreshList();
   }
   componentWillUnmount() {
     this.props.dispatch(setTagScrollPos(document.body.scrollTop));
   }
+  pagePre() {
+    if (this.state.page > 0) {
+      this.setState({
+        page: this.state.page - 1
+      });
+    }
+  }
+  pageNext() {
+    if (this.props.fetchInfo.fetchStat === 0) {
+      this.setState({
+        page: this.state.page + 1
+      });
+    }
+  }
   render() {
     return (
       <div className={this.props.sideBarStatus ? 'tag-container wide' : 'tag-container'}>
-        {this.state.list.map((tag, index) => {
+        {(this.props.fetchInfo['TagList'] || []).map((tag, index) => {
           return <TagItem key={tag._id} tag={tag} typeList={this.state.typeList} onDelete={id => this.deleteTag(id)} propChange={(key, url) => this.tagPropChange(key, url)} settingStatus={this.props.settingStatus}/>
         })}
+        <LoadMore fetchStatus={this.props.fetchInfo.fetchStat} pageNum={this.state.page + 1} callPre={() => this.pagePre()} callNext={() => this.pageNext()}/>
       </div>
     );
   }
@@ -165,7 +189,8 @@ Tags.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
   settingStatus: PropTypes.bool.isRequired,
   currentFilters: PropTypes.array.isRequired,
-  tagScrollPos: PropTypes.number.isRequired
+  tagScrollPos: PropTypes.number.isRequired,
+  fetchInfo: PropTypes.object.isRequired
 };
 
 function select(state) {
@@ -173,7 +198,8 @@ function select(state) {
     sideBarStatus: state.sideBarToggle,
     settingStatus: state.settingStatus,
     currentFilters: state.currentFilters,
-    tagScrollPos: state.tagScrollPos
+    tagScrollPos: state.tagScrollPos,
+    fetchInfo: state.requestDatas
   };
 }
 

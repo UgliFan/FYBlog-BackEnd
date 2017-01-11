@@ -5,7 +5,7 @@ var filters = require('../filters');
 router.get('/page', function(req, res, next) {
   var sortParams = { top: -1 },
       queryParams = {},
-      pageSize = req.query.pagesize || 10,
+      pageSize = req.query.pagesize || 20,
       pageNum = req.query.pagenum || 0;
   var sortField = req.query.sortfield || 'create_at';
   var sortOrder = req.query.sortorder || 'desc';
@@ -16,7 +16,11 @@ router.get('/page', function(req, res, next) {
   if (_key && s) queryParams[_key] = eval('/' + s + '/i');
   if (req.query.isoff !== undefined) queryParams.isOff = req.query.isoff;
   BlogDao.page(queryParams, sortParams, pageNum, pageSize).then(function(blogs) {
-    res.status(200).json({ code: 0, result: blogs });
+    BlogDao.getAll().then(function(all) {
+      res.status(200).json({ code: 0, result: blogs, total: all.length });
+    }).catch(function(error) {
+      res.status(200).json({ code: 0, result: blogs, total: 0 });
+    });
   }).catch(function(error) {
     next(error);
   });

@@ -7,6 +7,13 @@
   &.wide {
     padding-left: 0;
   }
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+  }
 
   .tag-item {
     width: 50%;
@@ -14,7 +21,7 @@
     line-height: 60px;
     font-size:  20px;
     padding: 10px;
-    float: left;
+    display: inline-block;
     overflow: hidden;
     position: relative;
     h4 {

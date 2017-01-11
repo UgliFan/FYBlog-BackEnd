@@ -120,7 +120,7 @@ nav {
 .filters-bar {
   position: fixed;
   left: 220px;
-  bottom: 10px;
+  top: 50px;
   z-index: $level9;
   transform: translateX(0);
   transition: transform $transSpace ease;
@@ -258,6 +258,36 @@ nav {
     opacity: 1;
     .confirm-body {
       transform: translate(-50%, -50%) scale(1);
+    }
+  }
+}
+
+.load-more {
+  width: 100%;
+  height: 40px;
+  padding: 5px;
+  text-align: center;
+  .text-banner {
+    height: 30px;
+    width: 100%;
+    line-height: 30px;
+    position: relative;
+    a {
+      width: 80px;
+      height: 30px;
+      position: absolute;
+      border-radius: $borderRadius;
+      box-shadow: $boxShadow;
+      color: $fontGrayst;
+      text-decoration: none;
+      &.pre-page {
+        top: 0;
+        left: 0;
+      }
+      &.next-page {
+        top: 0;
+        right: 0;
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import { is, fromJS } from 'immutable'
 import { Tool } from '../Libs/Tool'
 
 import BlogRow from './common/BlogRow'
+import LoadMore from './common/LoadMore'
 
 import {
   changeMenu,
@@ -26,20 +27,21 @@ class Main extends Component {
         index: 0,
         name:'全部',
         on:true,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       },{
         index: 1,
         name: '未锁',
         key: 'isOff',
         value: false,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       },{
         index: 2,
         name: '已锁',
         key: 'isOff',
         value: true,
-        callBack: (index) => this.refreshList(index)
+        callBack: (index) => this.filterCallBack(index)
       }],
+      filterIndex: 0,
       toolBar: [{
         type: 'link',
         name: '新增',
@@ -51,7 +53,8 @@ class Main extends Component {
         icon: 'iconfont icon-settings',
         callBack: 'toggleSetting'
       }],
-      list: []
+      list: [],
+      page: 0
     };
   }
   deleteBlog(id) {
@@ -78,13 +81,19 @@ class Main extends Component {
       }
     }));
   }
-  refreshList(index) {
+  filterCallBack(index) {
+    this.setState({
+      filterIndex: index
+    });
+  }
+  refreshList() {
     var param = {};
     this.props.currentFilters.forEach((filter, i) => {
-      if (filter.index === index && filter.key) {
+      if (filter.index === this.state.filterIndex && filter.key) {
         param[filter.key.toLowerCase()] = filter.value;
       }
     });
+    param.pagenum = this.state.page;
     this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
     this.props.dispatch(fetchGets('/blog/page', param, (list) => {
       this.setState({
@@ -96,10 +105,10 @@ class Main extends Component {
     this.props.dispatch(changeMenu(1));
     this.props.dispatch(setFilters(this.state.filters));
     this.props.dispatch(setToolBar(this.state.toolBar));
-    this.refreshList();
   }
   componentDidUpdate() {
     document.body.scrollTop = this.props.indexScrollPos;
+    this.refreshList();
   }
   componentWillUnmount() {
     this.props.dispatch(setIndexScrollPos(document.body.scrollTop));
@@ -136,14 +145,27 @@ class Main extends Component {
       }
     }));
   }
+  pagePre() {
+    if (this.state.page > 0) {
+      this.setState({
+        page: this.state.page - 1
+      });
+    }
+  }
+  pageNext() {
+    if (this.props.fetchInfo.fetchStat === 0) {
+      this.setState({
+        page: this.state.page + 1
+      });
+    }
+  }
   render() {
     return (
       <div className={this.props.sideBarStatus ? 'blog-container wide' : 'blog-container'}>
-        {
-          this.state.list.map((blog, index) => {
-            return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url) => this.blogPropChange(key, url)}/>
-          })
-        }
+        {(this.props.fetchInfo['BlogList'] || []).map((blog, index) => {
+          return <BlogRow key={blog._id} blog={blog} onDelete={id => this.deleteBlog(id)} settingStatus={this.props.settingStatus} propChange={(key, url) => this.blogPropChange(key, url)}/>
+        })}
+        <LoadMore fetchStatus={this.props.fetchInfo.fetchStat} pageNum={this.state.page + 1} callPre={() => this.pagePre()} callNext={() => this.pageNext()}/>
       </div>
     );
   }
@@ -153,7 +175,8 @@ Main.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
   settingStatus: PropTypes.bool.isRequired,
   currentFilters: PropTypes.array.isRequired,
-  indexScrollPos: PropTypes.number.isRequired
+  indexScrollPos: PropTypes.number.isRequired,
+  fetchInfo: PropTypes.object.isRequired
 };
 
 function select(state) {
@@ -161,7 +184,8 @@ function select(state) {
     sideBarStatus: state.sideBarToggle,
     settingStatus: state.settingStatus,
     currentFilters: state.currentFilters,
-    indexScrollPos: state.indexScrollPos
+    indexScrollPos: state.indexScrollPos,
+    fetchInfo: state.requestDatas
   };
 }
 

@@ -17,7 +17,11 @@ router.get('/page', function(req, res, next) {
     queryParams.type = req.query.type;
   }
   TagDao.page(queryParams, sortParams, pageNum, pageSize).then(function(tags) {
-    res.status(200).json({ code: 0, result: tags });
+    TagDao.getAll().then(function(all) {
+      res.status(200).json({ code: 0, result: tags, total: all.length });
+    }).catch(function(error) {
+      res.status(200).json({ code: 0, result: tags, total: 0 });
+    });
   }).catch(function(error) {
     next(error);
   });

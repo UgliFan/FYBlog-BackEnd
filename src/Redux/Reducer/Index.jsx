@@ -121,16 +121,23 @@ export function currentToolBar(state = [], action) {
   }
 }
 
-export function requestDatas(state = {}, action) {
+export function requestDatas(state = { fetchStat: 0 }, action) {
   switch (action.type) {
     case GET_DATA_START:
+      state.fetchStat = 1;
       state[action.name] = state[action.name] || [];
       return state;
     case GET_DATA_SUCCESS:
+      if (action.list.length > 0 && (action.page * 20 + action.list.length) < action.total) {
+        state.fetchStat = 0;
+      } else {
+        state.fetchStat = 2;
+      }
       state[action.name] = action.list;
       action.success(action.list);
       return state;
     case GET_DATA_FAIL:
+      state.fetchStat = 0;
       return state;
     default:
       return state;

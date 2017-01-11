@@ -15,6 +15,7 @@ import {
 import { fetchGets } from '../Redux/Action/Data'
 
 import CommentRow from './common/CommentRow'
+import LoadMore from './common/LoadMore'
 
 class TopicIdInput extends Component {
   constructor() {
@@ -62,30 +63,34 @@ class Comments extends Component {
     super();
     this.state = {
       topicId: '',
-      filters: [],
       toolBar: [{
         type: 'reducer',
         name: '设置',
         icon: 'iconfont icon-settings',
         callBack: 'toggleSetting'
       }],
-      list: []
+      list: [],
+      page: 0
     };
   }
   componentWillMount() {
     this.props.dispatch(changeMenu(3));
-    this.props.dispatch(setFilters(this.state.filters));
+    this.props.dispatch(setFilters([]));
     this.props.dispatch(setToolBar(this.state.toolBar));
     if (this.props.params.topic_id) {
       this.setState({
         topicId: this.props.params.topic_id
       });
-      this.refreshList(this.props.params.topic_id);
     }
   }
-  refreshList(topicId) {
-    if (topicId) {
-      this.props.dispatch(fetchGets(`/comment/page/${topicId}`, {}, (list) => {
+  componentDidUpdate() {
+    this.refreshList();
+  }
+  refreshList() {
+    if (this.state.topicId) {
+      var params = {};
+      params.pagenum = this.state.page;
+      this.props.dispatch(fetchGets(`/comment/page/${this.state.topicId}`, params, (list) => {
         this.setState({
           list: list
         });
@@ -96,7 +101,6 @@ class Comments extends Component {
     this.setState({
       topicId: topicId
     });
-    this.refreshList(topicId);
   }
   deleteComment(id) {
     this.props.dispatch(setConfirmDialog({
@@ -127,16 +131,31 @@ class Comments extends Component {
       }
     }));
   }
+  pagePre() {
+    if (this.state.page > 0) {
+      this.setState({
+        page: this.state.page - 1
+      });
+    }
+  }
+  pageNext() {
+    if (this.props.fetchInfo.fetchStat === 0) {
+      this.setState({
+        page: this.state.page + 1
+      });
+    }
+  }
   render() {
     return (
       <div className={this.props.sideBarStatus ? 'comm-container wide' : 'comm-container'}>
         <TopicIdInput initValue={this.props.params.topic_id} submitCallBack={topicId => this.submitCallBack(topicId)} />
-        {this.state.list.length > 0
-          ? this.state.list.map((comment, index) => {
+        {(this.props.fetchInfo['CommentList'] || []).length > 0
+          ? (this.props.fetchInfo['CommentList'] || []).map((comment, index) => {
             return <CommentRow key={index} comment={comment} onDelete={id => this.deleteComment(id)} settingStatus={this.props.settingStatus}/>
           })
           : this.state.topicId ? <NoComment /> : null
         }
+        {this.state.topicId ? <LoadMore fetchStatus={this.props.fetchInfo.fetchStat} pageNum={this.state.page + 1} callPre={() => this.pagePre()} callNext={() => this.pageNext()}/> : null}
       </div>
     );
   }
@@ -145,14 +164,16 @@ class Comments extends Component {
 Comments.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
   settingStatus: PropTypes.bool.isRequired,
-  currentFilters: PropTypes.array.isRequired
+  currentFilters: PropTypes.array.isRequired,
+  fetchInfo: PropTypes.object.isRequired
 };
 
 function select(state) {
   return {
     sideBarStatus: state.sideBarToggle,
     settingStatus: state.settingStatus,
-    currentFilters: state.currentFilters
+    currentFilters: state.currentFilters,
+    fetchInfo: state.requestDatas
   };
 }
 
