@@ -18,9 +18,9 @@ exports.refreshUser = function(req, res, next){
 var checkUid = function(req, res) {
   var uid = req.cookies[config.access_token_name_cookie];
   if (uid) {
-    return uid === req.session.user._id.toString();
+    return uid === req.session.user._id.toString() && req.session.user.groupId === 0;
   } else {
-    return true;
+    return false;
   }
 };
 
