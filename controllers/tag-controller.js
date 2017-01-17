@@ -2,7 +2,7 @@ var router = require('express').Router();
 var TagDao = require('../dao/TagDao');
 var filters = require('../filters');
 
-router.get('/page', function(req, res, next) {
+router.get('/page', filters.crossOrigin, function(req, res, next) {
   var sortParams = {},
       queryParams = {},
       pageSize = req.query.pagesize || 20,

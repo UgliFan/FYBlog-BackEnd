@@ -3,7 +3,7 @@ var BlogDao = require('../dao/BlogsDao');
 var filters = require('../filters');
 var marked = require('marked');
 
-router.get('/page', function(req, res, next) {
+router.get('/page', filters.crossOrigin, function(req, res, next) {
   var sortParams = { top: -1 },
       queryParams = {},
       pageSize = req.query.pagesize || 20,
@@ -35,7 +35,7 @@ router.get('/get/:id', function(req, res, next) {
     next(error);
   });
 });
-router.get('/get_html/:id', function(req, res, next) {
+router.get('/get_html/:id', filters.crossOrigin, function(req, res, next) {
   var _id = req.params.id;
   BlogDao.getById(_id).then(function(blog) {
     blog.content = marked(blog.content);
@@ -45,7 +45,7 @@ router.get('/get_html/:id', function(req, res, next) {
   });
 });
 
-router.post('/new', filters.accessToken, function(req, res, next) {
+router.post('/new', filters.crossOrigin, filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var params = req.body;
     params.author = req.session.user.name;
@@ -70,7 +70,7 @@ router.post('/new', filters.accessToken, function(req, res, next) {
   }
 });
 
-router.post('/set', filters.accessToken, function(req, res, next) {
+router.post('/set', filters.crossOrigin, filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var params = {
       title: req.body.title,
