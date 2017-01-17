@@ -3,7 +3,7 @@ var UserDao = require('../dao/UserDao');
 var config = require('../config').account;
 var filters = require('../filters');
 
-router.post('/login', function(req, res, next) {
+router.post('/login', filters.crossOrigin, function(req, res, next) {
   UserDao.getUserInfo(req.body.name).then(function(users) {
     if (!users || users.length < 1) {
       res.status(200).json({ code: -100, msg: '用户名不存在' });
@@ -22,7 +22,7 @@ router.post('/login', function(req, res, next) {
   });
 });
 
-router.post('/register', function(req, res, next) {
+router.post('/register', filters.crossOrigin, function(req, res, next) {
   req.body.icon = req.body.icon || '/images/404.jpg';
   req.body.groupId = 1; // 强制注册用户为普通用户
   req.body.updateAt = req.body.createAt = new Date().getTime();

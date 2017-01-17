@@ -2,7 +2,7 @@ var router = require('express').Router();
 var CommentDao = require('../dao/CommentDao');
 var filters = require('../filters');
 
-router.get('/page/:topic_id', function(req, res, next) {
+router.get('/page/:topic_id', filters.crossOrigin, function(req, res, next) {
   var sortParams = {},
       queryParams = {
         topic_id: req.params.topic_id
@@ -31,7 +31,7 @@ router.get('/get/:id', function(req, res, next) {
   });
 });
 
-router.post('/new', function(req, res, next) {
+router.post('/new', filters.crossOrigin, function(req, res, next) {
   var params = req.body;
   params.create_at = new Date().getTime();
   CommentDao.save(params).then(function() {
