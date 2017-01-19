@@ -49,7 +49,7 @@ router.post('/reply/:id', filters.crossOrigin, function(req, res, next) {
   var params = req.body;
   params.author_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   params.create_at = new Date().getTime();
-  CommentDao.getById(_id).then(function(comment) {
+  CommentDao.getById(req.params.id).then(function(comment) {
     var children = comment.children || [];
     children.push(params);
     CommentDao.update({
