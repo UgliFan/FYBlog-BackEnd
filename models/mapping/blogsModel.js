@@ -7,6 +7,7 @@ var schema = new Schema({
   icon: { type: String },
   content: { type: String },
   author: { type: String },
+  hot: { type: Boolean, default: false },
   top: { type: Boolean, default: false },
   reply_count: { type: Number, default: 0 },
   visit_count: { type: Number, default: 0 },
