@@ -27,6 +27,46 @@ router.get('/page', filters.crossOrigin, function(req, res, next) {
   });
 });
 
+router.get('/page/hot', filters.crossOrigin, function(req, res, next) {
+  var sortParams = { top: -1 },
+      queryParams = { hot: true },
+      pageSize = req.query.pagesize || 20,
+      pageNum = req.query.pagenum || 0;
+  var sortField = req.query.sortfield || 'create_at';
+  var sortOrder = req.query.sortorder || 'desc';
+  sortParams[sortField] = sortOrder === 'desc' ? -1 : 1;
+
+  var _key = req.query._key || '';
+  var s = req.query.s || '';
+  if (_key && s) queryParams[_key] = eval('/' + s + '/i');
+  if (req.query.isoff !== undefined) queryParams.isOff = req.query.isoff;
+  BlogDao.page(queryParams, sortParams, pageNum, pageSize).then(function(blogs) {
+    BlogDao.getAllHot().then(function(all) {
+      res.status(200).json({ code: 0, result: blogs, total: all.length });
+    }).catch(function(error) {
+      res.status(200).json({ code: 0, result: blogs, total: 0 });
+    });
+  }).catch(function(error) {
+    next(error);
+  });
+});
+
+router.get('/recommend/slide', filters.crossOrigin, function(req, res, next) {
+  BlogDao.slideRecom().then(function(blogs) {
+    res.status(200).json({ code: 0, result: blogs });
+  }).catch(function(error) {
+    res.status(200).json({ code: -300, result: [] });
+  });
+});
+
+router.get('/recommend/top5', filters.crossOrigin, function(req, res, next) {
+  BlogDao.topFive().then(function(blogs) {
+    res.status(200).json({ code: 0, result: blogs });
+  }).catch(function(error) {
+    res.status(200).json({ code: -300, result: [] });
+  });
+});
+
 router.get('/get/:id', function(req, res, next) {
   var _id = req.params.id;
   BlogDao.getById(_id).then(function(blog) {
@@ -50,6 +90,7 @@ router.post('/new', filters.crossOrigin, filters.accessToken, function(req, res,
     var params = req.body;
     params.author = req.session.user.name;
     params.top = false;
+    params.hot = false;
     params.reply_count = 0;
     params.visit_count = 0;
     params.zan_count = 0;
