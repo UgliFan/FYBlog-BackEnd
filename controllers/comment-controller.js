@@ -33,12 +33,41 @@ router.get('/get/:id', function(req, res, next) {
 
 router.post('/new', filters.crossOrigin, function(req, res, next) {
   var params = req.body;
+  params.zan_count = 0;
+  params.cai_count = 0;
+  params.children = [];
+  params.author_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   params.create_at = new Date().getTime();
   CommentDao.save(params).then(function() {
-    res.status(200).json({ code: 0, msg: '保存成功' });
+    res.status(200).json({ code: 0, msg: '评论成功' });
   }).catch(function(error) {
-    next();
+    res.status(200).json({ code: -200, msg: '评论失败', error: error });
   });
+});
+
+router.post('/reply/:id', filters.crossOrigin, function(req, res, next) {
+  var params = req.body;
+  params.author_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  params.create_at = new Date().getTime();
+  CommentDao.getById(_id).then(function(comment) {
+    var children = comment.children || [];
+    children.push(params);
+    CommentDao.update({
+      _id: req.params.id
+    }, {
+      $set: {
+        children: children
+      }
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '评论成功' });
+    }).catch(function(error) {
+      res.status(200).json({ code: -200, msg: '评论失败', error: error });
+    });
+    res.status(200).json({ code: 0, result: comment });
+  }).catch(function(error) {
+    next(error);
+  });
+  
 });
 
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
