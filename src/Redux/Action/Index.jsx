@@ -25,6 +25,12 @@ export const MenuList = [{
   className: 'iconfont icon-tag',
   classNameActive: 'iconfont icon-tagfill'
 }, {
+  key: 5,
+  name: '文件',
+  link: '/files',
+  className: 'iconfont icon-pic',
+  classNameActive: 'iconfont icon-picfill'
+}, {
   key: 3,
   name: '评论',
   link: '/comments',

@@ -1,0 +1,250 @@
+@import "variable.scss";
+
+.file-container {
+  padding-left: $sideBarWidth;
+  padding-top: $headerHeight;
+  transition: all $transSpace ease;
+  &.wide {
+    padding-left: 0;
+  }
+
+  .bread-crumb {
+    width: 100%;
+    height: 50px;
+    line-height: 30px;
+    padding: 10px;
+    .bread-item {
+      display: inline-block;
+      color: $blue;
+      font-size: 14px;
+      height: 30px;
+      cursor: pointer;
+      margin-right: 4px;
+      &:after {
+        content: '/';
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 4px;
+        font-size: 12px;
+        line-height: 27px;
+      }
+      &:last-child {
+        color: $fontGrayst;
+      }
+    }
+  }
+  .file-empty {
+    width: 100%;
+    text-align: center;
+    height: 60px;
+    padding: 20px;
+    line-height: 20px;
+    font-size: 16px;
+    color: $fontGray;
+  }
+
+  .file-row {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    padding: 0 180px 0 10px;
+    &:first-child {
+      border-top: 1px solid #ddd;
+    }
+    .file-name {
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      font-size: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: $black;
+      &.folder {
+        color: $blue;
+        cursor: pointer;
+      }
+      .nick-name {
+        width: 100%;
+        .nick {
+          height: 35px;
+          padding-top: 5px;
+          line-height: 30px;
+          font-size: 16px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .name {
+          height: 25px;
+          padding-bottom: 5px;
+          line-height: 20px;
+          font-size: 12px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: $fontGray;
+        }
+      }
+    }
+    .file-type {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      top: 0;
+      right: 120px;
+      text-align: center;
+      line-height: 60px;
+      font-size: 40px;
+      i {
+        color: $fontGrayst;
+      }
+    }
+    .file-download {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 5px;
+      right: 65px;
+      border-radius: $borderRadius;
+      box-shadow: $boxShadow;
+      text-align: center;
+      line-height: 50px;
+      font-size: 30px;
+      cursor: pointer;
+      i {
+        color: $blueLight;
+      }
+    }
+    .file-delete {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      border-radius: $borderRadius;
+      box-shadow: $boxShadow;
+      text-align: center;
+      line-height: 50px;
+      font-size: 30px;
+      cursor: pointer;
+      i {
+        color: $red;
+      }
+    }
+  }
+}
+
+.file-edit-container {
+  padding-left: $sideBarWidth;
+  padding-top: $headerHeight;
+  transition: all $transSpace ease;
+  &.wide {
+    padding-left: 0;
+  }
+  .input-block {
+    width: 100%;
+    position: relative;
+    padding: 30px 10px 0;
+    label {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      text-align: center;
+      display: block;
+      height: 22px;
+      padding: 0 10px;
+      line-height: 22px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    input[type='text'] {
+      width: 200px;
+      height: 34px;
+      border: none;
+      border-radius: $borderRadius;
+      background: $white;
+      box-shadow: $boxShadow;
+      padding: 10px 20px;
+      font-size: 14px;
+      line-height: 14px;
+    }
+    .select-block {
+      width: 200px;
+      height: 30px;
+      overflow: hidden;
+      position: relative;
+      transition: height .3s ease;
+      box-shadow: $boxShadow;
+      &.active {
+        height: 60px;
+        .select-item {
+          position: relative;
+          display: block;
+        }
+      }
+      i {
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        cursor: pointer;
+        color: $white;
+        text-shadow: rgba(0,0,0,.26) 0 1px 0;
+        text-align: center;
+      }
+      .select-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        line-height: 30px;
+        display: none;
+        padding: 0 20px;
+        &.selected {
+          display: block;
+          background-color: $blueLight;
+          color: $white;
+        }
+      }
+    }
+  }
+  .img-area {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    .img-title {
+      font-size: 16px;
+      line-height: 30px;
+    }
+    .img-select {
+      display: block;
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      font-size: 80px;
+      color: $fontGray;
+      border-radius: $borderRadius;
+      box-shadow: $boxShadow;
+      cursor: pointer;
+      canvas {
+        width: 200px;
+        height: 200px;
+        margin: 0;
+        padding: 0;
+        border-radius: $borderRadius;
+      }
+    }
+  }
+  .hidden {
+    display: none;
+  }
+}

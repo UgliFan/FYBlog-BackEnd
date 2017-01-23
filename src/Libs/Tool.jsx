@@ -15,6 +15,21 @@ Tool.post = (url, data) => {
   });
 };
 
+Tool.upload = (url, data) => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: data,
+      success: data => resolve(data),
+      error: err => reject(err)
+    });
+  });
+};
+
 Tool.get = (url, data) => {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -53,13 +68,6 @@ Tool.localItem = (key, value) => {
   } else {
     return localStorage.setItem(key, value);
   }
-};
-
-Tool.removeLocalItem = (key) => {
-  if (key) {
-    return localStorage.removeItem(key);
-  }
-  return localStorage.removeItem();
 };
 
 Tool.paramsFormat = data => {

@@ -22,7 +22,8 @@ var serverDev = new WebpackDevServer(webpack(webpackConfig), {
       '/group/**',
       '/tag_type/**',
       '/tag/**',
-      '/comment/**'
+      '/comment/**',
+      '/file/**'
     ],
     target: 'http://localhost:8823',
     secure: false

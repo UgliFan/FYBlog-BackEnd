@@ -1,6 +1,12 @@
 var config = require('../config').account;
 var UserDao = require('../dao/UserDao');
 var jwt = require('jwt-simple');
+var formidable = require('formidable');
+var fileUtils = require('./fileUtils');
+var path = require('path');
+var FileDao = require('../dao/FileDao');
+
+var rootPath = path.join(global.__rootPath, 'static/upload');
 
 exports.refreshUser = function(req, res, next){
   if (req.session.user && req.session.user._id) {
@@ -51,7 +57,40 @@ exports.crossOrigin = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS,FETCH");
-  res.header("X-Powered-By",' 3.2.1')
+  res.header("X-Powered-By",' 3.2.1');
   res.header("Content-Type", "application/json;charset=utf-8");
   next();
 };
+
+exports.uploadFiles = function (req, res, next) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    var fileObj = {};
+    fileObj.nick_name = fields.name;
+    fileObj.name = files.file.name;
+    fileObj.pid = fields.pid;
+    fileObj.create_at = new Date().getTime();
+    fileObj.update_at = new Date().getTime();
+    fileObj.position = fields.position;
+    if (files.file.type.indexOf('image') > -1) {
+      fileObj.type = 'p';
+    } else {
+      fileObj.type = 'o';
+    }
+    FileDao.saveFile(fileObj).then(function(file) {
+      var params = {
+        name: file.name,
+        oldPath: files.file.path,
+        position: path.join(rootPath, file.position)
+      };
+      fileUtils.crossRename(params).then(function() {
+        file.size = files.file.size;
+        req.params.fileInfo = file;
+        next();
+      }, function(err) {
+        req.params.fileError = err;
+        next();
+      });
+    });
+  });
+}

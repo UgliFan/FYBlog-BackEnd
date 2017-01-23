@@ -24,6 +24,18 @@ const TagEdit = (location, cb) => {
     },'TagEdit')
 };
 
+const Files = (location, cb) => {
+    require.ensure([], require => {
+        cb(null, require('../Component/Files').default)
+    },'Files')
+};
+
+const FileEdit = (location, cb) => {
+    require.ensure([], require => {
+        cb(null, require('../Component/FileEdit').default)
+    },'FileEdit')
+};
+
 const Comments = (location, cb) => {
     require.ensure([], require => {
         cb(null, require('../Component/Comments').default)
@@ -44,6 +56,8 @@ const RouteConfig = (
       <Route path="blogs/edit(/:id)" getComponent={ BlogEdit } />
       <Route path="tags" getComponent={ Tags } />
       <Route path="tags/edit(/:id)" getComponent={ TagEdit } />
+      <Route path="files" getComponent={ Files } />
+      <Route path="file/edit(/:id)" getComponent={ FileEdit } />
       <Route path="comments(/:topic_id)" getComponent={ Comments } />
       <Route path="users" getComponent={ Users } />
       <Redirect from="*" to="/" />
