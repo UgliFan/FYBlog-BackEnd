@@ -55,9 +55,7 @@ exports.rmFile = function(name) {
   var directory = rootPath + name;
   return new Promise(function(resolve, reject) {
     try {
-      console.log(name);
       fs.exists(directory, function(exists) {
-        console.log(exists);
         if (exists) {
           fs.unlinkSync(directory);
           resolve('delete file success.');
