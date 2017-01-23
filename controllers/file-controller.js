@@ -72,24 +72,17 @@ router.post('/save', filters.crossOrigin, filters.uploadFiles, function(req, res
   }
 });
 
-router.post('/update', function(req, res, next) {
-  var params = req.body;
-  FileDao.updateFile(params, function(err) {
-    if (err) {
-      next(err);
-    } else {
-      res.status(200).json({code: 0, msg: 'update success'});
-    }
-  });
-});
-
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
-  var _id = req.params.id;
-  FileDao.deleteFile(_id).then(function(data) {
-    res.status(200).json({code: 0, result: data});
-  }, function(err) {
-    next(err);
-  });
+  if (req.params.accessToken) {
+    var _id = req.params.id;
+    FileDao.deleteFile(_id).then(function (data) {
+      res.status(200).json({code: 0, msg: '删除成功'});
+    }, function (err) {
+      res.status(200).json({code: -200, msg: '删除失败'});
+    });
+  } else {
+    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+  }
 });
 
 router.get('/download/:id',function(req, res, next){

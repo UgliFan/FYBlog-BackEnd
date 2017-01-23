@@ -64,21 +64,22 @@ BaseDao.prototype.deleteFile = function(id) {
   return new Promise(function(resolve,reject) {
     self.model.findOne({_id:id}, null, {}, function(err,catalog) {
       if (catalog.type === 'f') {
-        fileUtils.rmDir(catalog.position).done(function() {
-            self.model.remove({_id: id}, function(err,data) {
-              if (err) reject(err);
-              else resolve(data);
-            });
+        fileUtils.rmDir(catalog.position).then(function() {
+          self.model.remove({_id: id}, function(err,data) {
+            if (err) reject(err);
+            else resolve(data);
           });
+        }, function(err) {
+          reject(err)
+        });
       }else{
-        fileUtils.rmFile(catalog.position).done(function() {
+        fileUtils.rmFile(catalog.position).then(function() {
           self.model.remove({_id:id}, function(err,data) {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(data);
-            }
+            if (err) reject(err);
+            else resolve(data);
           });
+        }, function(err) {
+          reject(err);
         });
       }
     });

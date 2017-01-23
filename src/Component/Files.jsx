@@ -104,7 +104,7 @@ class Files extends Component {
       });
     }, 'FileBread'));
   }
-  deleteTag(id) {
+  deleteFile(id) {
     this.props.dispatch(setConfirmDialog({
       title: '确认删除？',
       confirmCallback: () => {
@@ -141,38 +141,6 @@ class Files extends Component {
   componentDidUpdate() {
     this.refreshBread();
     this.refreshList();
-  }
-  deleteFile(id) {
-    this.props.dispatch(setConfirmDialog({
-      title: '确认删除？',
-      confirmCallback: () => {
-        this.props.dispatch(closeConfirmDialog());
-        Tool.get('/token').then(data => {
-          let postData ={
-            token: data.token
-          };
-          Tool.post('/file/remove/' + id, postData).then(data => {
-            this.props.dispatch(showMessage({
-              type: data.code === 0 ? 'success' : 'warn',
-              text: data.msg
-            }));
-            if (data.code === 0) {
-              this.refreshList();
-            }
-          }).catch(() => {
-            this.props.dispatch(showMessage({
-              type: 'danger',
-              text: '网络错误，请稍后重试'
-            }));
-          });
-        }).catch(() => {
-          this.props.dispatch(showMessage({
-            type: 'danger',
-            text: '网络错误，请稍后重试'
-          }));
-        });
-      }
-    }));
   }
   downloadFile(id) {
     window.location.href = '/file/download/' + id;
