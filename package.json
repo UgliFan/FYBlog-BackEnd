@@ -77,6 +77,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "formidable": "^1.0.17",
+    "fs": "0.0.1-security",
     "jwt-simple": "^0.5.1",
     "marked": "^0.3.6",
     "mongoose": "^4.7.4",
