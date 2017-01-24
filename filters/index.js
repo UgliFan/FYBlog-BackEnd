@@ -123,7 +123,7 @@ exports.uploadImages = function(req, res, next) {
     };
     imageObj.position = imageFolder + randomName;
     fileUtils.crossRename(params).then(function() {
-      FileDao.saveFile(imageObj).then(function(image) {
+      FileDao.saveFile(imageObj, true).then(function(image) {
         res.status(200).json({ code: 0, image: image });
       }, function() {
         res.status(200).json({ code: -200, msg: '文件记录保存失败' });
