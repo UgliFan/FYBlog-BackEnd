@@ -5,6 +5,8 @@ var formidable = require('formidable');
 var fileUtils = require('./fileUtils');
 var path = require('path');
 var FileDao = require('../dao/FileDao');
+var UserDao = require('../dao/UserDao');
+var uuid = require('uuid/v4');
 
 var rootPath = path.join(global.__rootPath, 'static/upload');
 
@@ -93,4 +95,50 @@ exports.uploadFiles = function (req, res, next) {
       });
     });
   });
-}
+};
+
+exports.register = function(req, res, next) {
+  var iconUrl = '//back.fyq2yj.cn/upload/58845a31c52046b8ee7da9cb/58845ad1c52046b8ee7da9cc/';
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    console.log(fields);
+    var registerObj = {
+      name: fields.name,
+      email: fields.email,
+      tel: fields.tel,
+      icon: '',
+      password: fields.password,
+      groupId: 1,
+      active: true,
+      createAt: new Date().getTime(),
+      updateAt: new Date().getTime()
+    };
+    var randomUuid = uuid();
+    var index = files.file.name.lastIndexOf('.');
+    var fileType = files.file.name.substr(index, files.file.name.length);
+    var randomName = randomUuid + fileType;
+    var params = {
+      name: files.file.name,
+      oldPath: files.file.path,
+      position: path.join(rootPath, '58845a31c52046b8ee7da9cb/58845ad1c52046b8ee7da9cc', randomName)
+    };
+    registerObj.icon = iconUrl + randomName;
+    UserDao.checkExist(req.body).then(function(users) {
+      if (users && users.length > 0) {
+        res.status(200).json({ code: -103, msg: '用户已存在' });
+      } else {
+        fileUtils.crossRename(params).then(function() {
+          UserDao.save(registerObj).then(function(user) {
+            res.status(200).json({ code: 0, msg: '注册成功' });
+          }).catch(function(error) {
+            res.status(200).json({ code: -200, msg: '注册失败', extraMsg: error });
+          });
+        }, function(err) {
+          res.status(200).json({ code: -200, msg: 'IO异常' });
+        });
+      }
+    }).catch(function(error) {
+      next();
+    });
+  });
+};
