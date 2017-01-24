@@ -97,6 +97,43 @@ exports.uploadFiles = function (req, res, next) {
   });
 };
 
+exports.uploadImages = function(req, res, next) {
+  var imageFolder = '//back.fyq2yj.cn/upload/58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf/';
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    var imageObj = {};
+    imageObj.nick_name = files.image.name;
+    imageObj.name = files.image.name;
+    imageObj.pid = '58875b90c52046b8ee7da9cf';
+    imageObj.create_at = new Date().getTime();
+    imageObj.update_at = new Date().getTime();
+    if (files.image.type.indexOf('image') > -1) {
+      imageObj.type = 'p';
+    } else {
+      imageObj.type = 'o';
+    }
+    var randomUuid = uuid();
+    var index = files.image.name.lastIndexOf('.');
+    var fileType = files.image.name.substr(index, files.image.name.length);
+    var randomName = randomUuid + fileType;
+    var params = {
+      name: files.image.name,
+      oldPath: files.image.path,
+      position: path.join(rootPath, '58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf', randomName)
+    };
+    imageObj.position = imageFolder + randomName;
+    fileUtils.crossRename(params).then(function() {
+      FileDao.saveFile(imageObj).then(function(image) {
+        res.status(200).json({ code: 0, image: image });
+      }, function() {
+        res.status(200).json({ code: -200, msg: '文件记录保存失败' });
+      });
+    }, function(err) {
+      res.status(200).json({ code: -200, msg: 'IO异常' });
+    });
+  });
+};
+
 exports.register = function(req, res, next) {
   var iconUrl = '//back.fyq2yj.cn/upload/58845a31c52046b8ee7da9cb/58845ad1c52046b8ee7da9cc/';
   var form = new formidable.IncomingForm();
