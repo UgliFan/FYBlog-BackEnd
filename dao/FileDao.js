@@ -42,6 +42,8 @@ BaseDao.prototype.saveFile = function(file, noUpdate) {
               resolve(data);
             }
           });
+        } else {
+          resolve(data);
         }
       }
     });
