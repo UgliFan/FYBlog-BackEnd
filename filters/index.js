@@ -98,7 +98,6 @@ exports.uploadFiles = function (req, res, next) {
 };
 
 exports.uploadImages = function(req, res, next) {
-  var imageFolder = '//back.fyq2yj.cn/upload/58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf/';
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, files) {
     var imageObj = {};
@@ -121,7 +120,7 @@ exports.uploadImages = function(req, res, next) {
       oldPath: files.image.path,
       position: path.join(rootPath, '58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf', randomName)
     };
-    imageObj.position = imageFolder + randomName;
+    imageObj.position = params.position;
     fileUtils.crossRename(params).then(function() {
       FileDao.saveFile(imageObj, true).then(function(image) {
         res.status(200).json({ code: 0, image: image });
