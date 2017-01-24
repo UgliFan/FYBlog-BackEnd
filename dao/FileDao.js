@@ -21,7 +21,7 @@ BaseDao.prototype.page = function(queryParams, sortParams, pageNum, pageSize) {
   });
 };
 
-BaseDao.prototype.saveFile = function(file) {
+BaseDao.prototype.saveFile = function(file, noUpdate) {
   var self = this;
   return new Promise(function(resolve, reject) {
     self.model.create(file, function(err, data) {
@@ -30,7 +30,7 @@ BaseDao.prototype.saveFile = function(file) {
       } else {
         if (data.type === 'f') {
           resolve(data);
-        } else {
+        } else if (!noUpdate) {
           var id = data._id;
           var index = data.name.lastIndexOf('.');
           var fileType = data.name.substr(index, data.name.length);
