@@ -120,7 +120,7 @@ exports.uploadImages = function(req, res, next) {
       oldPath: files.image.path,
       position: path.join(rootPath, '58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf', randomName)
     };
-    imageObj.position = params.position;
+    imageObj.position = path.join('/58845a31c52046b8ee7da9cb/58845aefc52046b8ee7da9cd/58875b90c52046b8ee7da9cf', randomName);
     fileUtils.crossRename(params).then(function() {
       FileDao.saveFile(imageObj, true).then(function(image) {
         res.status(200).json({ code: 0, image: image });
