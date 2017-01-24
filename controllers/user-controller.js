@@ -27,25 +27,8 @@ router.post('/login', filters.crossOrigin, function(req, res, next) {
   });
 });
 
-router.post('/register', filters.crossOrigin, function(req, res, next) {
-  req.body.icon = req.body.icon || '/images/404.jpg';
-  req.body.groupId = 1; // 强制注册用户为普通用户
-  req.body.updateAt = req.body.createAt = new Date().getTime();
-  req.body.active = true;
-  UserDao.checkExist(req.body).then(function(users) {
-    if (users && users.length > 0) {
-      res.status(200).json({ code: -103, msg: '用户已存在' });
-    } else {
-      UserDao.save(req.body).then(function(user) {
-        res.status(200).json({ code: 0, msg: '保存成功' });
-      }).catch(function(error) {
-        res.status(200).json({ code: -200, msg: '保存失败', extraMsg: error });
-      });
-    }
-  }).catch(function(error) {
-    console.log('checkExist fail');
-    next(error);
-  });
+router.post('/register', filters.crossOrigin, filters.register, function(req, res, next) {
+  next();
 });
 
 router.post('/reset/:id', filters.accessToken, function(req, res, next) {
