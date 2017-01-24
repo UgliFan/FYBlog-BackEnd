@@ -101,11 +101,11 @@ exports.register = function(req, res, next) {
   var iconUrl = '//back.fyq2yj.cn/upload/58845a31c52046b8ee7da9cb/58845ad1c52046b8ee7da9cc/';
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, files) {
-    console.log(fields);
     var registerObj = {
       name: fields.name,
       email: fields.email,
       tel: fields.tel,
+      sex: fields.sex,
       icon: '',
       password: fields.password,
       groupId: 1,
@@ -123,7 +123,7 @@ exports.register = function(req, res, next) {
       position: path.join(rootPath, '58845a31c52046b8ee7da9cb/58845ad1c52046b8ee7da9cc', randomName)
     };
     registerObj.icon = iconUrl + randomName;
-    UserDao.checkExist(req.body).then(function(users) {
+    UserDao.checkExist(registerObj).then(function(users) {
       if (users && users.length > 0) {
         res.status(200).json({ code: -103, msg: '用户已存在' });
       } else {
