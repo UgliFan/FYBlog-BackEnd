@@ -72,6 +72,10 @@ router.post('/save', filters.crossOrigin, filters.uploadFiles, function(req, res
   }
 });
 
+router.post('/upload', filters.crossOrigin, filters.uploadImages, function(req, res, next) {
+  next();
+});
+
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
   if (req.params.accessToken) {
     var _id = req.params.id;

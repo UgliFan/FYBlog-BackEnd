@@ -85,30 +85,26 @@ router.get('/get_html/:id', filters.crossOrigin, function(req, res, next) {
   });
 });
 
-router.post('/new', filters.crossOrigin, filters.accessToken, function(req, res, next) {
-  if (req.params.accessToken) {
-    var params = req.body;
-    params.author = req.session.user.name;
-    params.top = false;
-    params.hot = false;
-    params.reply_count = 0;
-    params.visit_count = 0;
-    params.zan_count = 0;
-    params.last_reply = null;
-    params.last_reply_at = null;
-    params.create_at = new Date().getTime();
-    params.isOff = false;
-    if (!params.remark) {
-      params.remark = params.content.substr(0, 30);
-    }
-    BlogDao.save(params).then(function() {
-      res.status(200).json({ code: 0, msg: '保存成功' });
-    }).catch(function(error) {
-      next();
-    });
-  } else {
-    res.status(200).json({ code: -400, msg: 'Token 获取失败' });
+router.post('/new', filters.crossOrigin, function(req, res, next) {
+  var params = req.body;
+  params.author = params.author ? params.author : req.session.user.name;
+  params.top = false;
+  params.hot = false;
+  params.reply_count = 0;
+  params.visit_count = 0;
+  params.zan_count = 0;
+  params.last_reply = null;
+  params.last_reply_at = null;
+  params.create_at = new Date().getTime();
+  params.isOff = false;
+  if (!params.remark) {
+    params.remark = params.content.substr(0, 30);
   }
+  BlogDao.save(params).then(function() {
+    res.status(200).json({ code: 0, msg: '保存成功' });
+  }).catch(function(error) {
+    next();
+  });
 });
 
 router.post('/set', filters.crossOrigin, filters.accessToken, function(req, res, next) {

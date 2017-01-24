@@ -16,7 +16,6 @@ const requestPosts = path => {
   }
 }
 const receivePosts = (path, json) => {
-  console.log(json);
   return {
     type: RECEIVE_POSTS,
     path,
