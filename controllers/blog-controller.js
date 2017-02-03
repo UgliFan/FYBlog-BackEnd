@@ -79,6 +79,9 @@ router.get('/get_html/:id', filters.crossOrigin, function(req, res, next) {
   var _id = req.params.id;
   BlogDao.getById(_id).then(function(blog) {
     blog.content = marked(blog.content);
+    BlogDao.update({_id: _id}, {
+      $set: {visit_count: blog.visit_count + 1}
+    }, {});
     res.status(200).json({ code: 0, result: blog });
   }).catch(function(error) {
     next(error);
@@ -100,8 +103,8 @@ router.post('/new', filters.crossOrigin, function(req, res, next) {
   if (!params.remark) {
     params.remark = params.content.substr(0, 30);
   }
-  BlogDao.save(params).then(function() {
-    res.status(200).json({ code: 0, msg: '保存成功' });
+  BlogDao.save(params).then(function(data) {
+    res.status(200).json({ code: 0, msg: '保存成功', result: data });
   }).catch(function(error) {
     next();
   });
@@ -127,6 +130,22 @@ router.post('/set', filters.crossOrigin, filters.accessToken, function(req, res,
   } else {
     res.status(200).json({ code: -400, msg: 'Token 获取失败' });
   }
+});
+
+router.post('/zan/:id', filters.crossOrigin, function(req, res, next) {
+  BlogDao.getById(req.params.id).then(function(blog) {
+    BlogDao.update({
+      _id: req.params.id
+    }, {
+      $set: { zan_count: blog.zan_count + 1 }
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '点赞成功' });
+    }).catch(function(error) {
+      next(error);
+    });
+  }).catch(function(error) {
+    next(error);
+  });
 });
 
 router.post('/up/:id', filters.accessToken, function(req, res, next) {

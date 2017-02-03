@@ -7,9 +7,9 @@ function DaoBase(Model) {
 DaoBase.prototype.save = function(params) {
   var self = this;
   return new Promise(function(resolve, reject) {
-    self.model.create(params, function(error) {
+    self.model.create(params, function(error, data) {
       if (error) reject(error);
-      else resolve(params);
+      else resolve(data);
     });
   });
 };
