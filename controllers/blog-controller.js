@@ -100,8 +100,8 @@ router.post('/new', filters.crossOrigin, function(req, res, next) {
   if (!params.remark) {
     params.remark = params.content.substr(0, 30);
   }
-  BlogDao.save(params).then(function() {
-    res.status(200).json({ code: 0, msg: '保存成功' });
+  BlogDao.save(params).then(function(data) {
+    res.status(200).json({ code: 0, msg: '保存成功', result: data });
   }).catch(function(error) {
     next();
   });
