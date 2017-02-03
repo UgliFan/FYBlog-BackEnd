@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var CommentDao = require('../dao/CommentDao');
+var BlogDao = require('../dao/BlogsDao');
 var filters = require('../filters');
 
 router.get('/page/:topic_id', filters.crossOrigin, function(req, res, next) {
@@ -39,6 +40,11 @@ router.post('/new', filters.crossOrigin, function(req, res, next) {
   params.author_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   params.create_at = new Date().getTime();
   CommentDao.save(params).then(function() {
+    CommentDao.count(params.topic_id).then(function(count) {
+      BlogDao.update({_id: params.topic_id}, {
+        $set: {reply_count: count}
+      }, {});
+    });
     res.status(200).json({ code: 0, msg: '评论成功' });
   }).catch(function(error) {
     res.status(200).json({ code: -200, msg: '评论失败', error: error });
@@ -67,7 +73,7 @@ router.post('/reply/:id', filters.crossOrigin, function(req, res, next) {
   }).catch(function(error) {
     next(error);
   });
-  
+
 });
 
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
