@@ -73,7 +73,34 @@ router.post('/reply/:id', filters.crossOrigin, function(req, res, next) {
   }).catch(function(error) {
     next(error);
   });
+});
 
+router.post('/zan/:id', filters.crossOrigin, function(req, res, next) {
+  CommentDao.getById(req.params.id).then(function(comment) {
+    CommentDao.update({_id: req.params.id}, {
+      $set: {zan_count: comment.zan_count + 1}
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '点赞成功' });
+    }).catch(function(error) {
+      res.status(200).json({ code: -200, msg: '点赞失败' });
+    });
+  }).catch(function(error) {
+    next(error);
+  });
+});
+
+router.post('/cai/:id', filters.crossOrigin, function(req, res, next) {
+  CommentDao.getById(req.params.id).then(function(comment) {
+    CommentDao.update({_id: req.params.id}, {
+      $set: {cai_count: comment.cai_count + 1}
+    }, {}).then(function() {
+      res.status(200).json({ code: 0, msg: '踩一脚成功' });
+    }).catch(function(error) {
+      res.status(200).json({ code: -200, msg: '踩一脚失败' });
+    });
+  }).catch(function(error) {
+    next(error);
+  });
 });
 
 router.post('/remove/:id', filters.accessToken, function(req, res, next) {
