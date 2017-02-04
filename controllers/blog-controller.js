@@ -103,13 +103,14 @@ router.post('/new', filters.crossOrigin, function(req, res, next) {
   if (!params.remark) {
     params.remark = params.content.substr(0, 30);
   }
-  if (!params.icon) {
+  if (!params.icon && /<img(.*)\/>/.test(params.content)) {
     var img = params.content.match(/<img(.*)\/>/)[0] || '';
     var imgSrc = img.match(/src=\"([^\"]*?)\"/)[1];
     if (imgSrc) {
       params.icon = imgSrc;
     }
   }
+  params.tags = JSON.parse(params.tags);
   BlogDao.save(params).then(function(data) {
     res.status(200).json({ code: 0, msg: '保存成功', result: data });
   }).catch(function(error) {

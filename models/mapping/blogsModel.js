@@ -15,7 +15,8 @@ var schema = new Schema({
   create_at: { type: Number },
   last_reply: { type: String },
   last_reply_at: { type: Number },
-  isOff: { type: Boolean }
+  isOff: { type: Boolean },
+  tags: { type: Array }
 });
 
 mongoose.model('blogs', schema);
