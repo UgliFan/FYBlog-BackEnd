@@ -42,6 +42,12 @@ const Comments = (location, cb) => {
     },'Comments')
 };
 
+const Issues = (location, cb) => {
+  require.ensure([], require => {
+    cb(null, require('../Component/Issues').default)
+  },'Issues')
+};
+
 const Users = (location, cb) => {
     require.ensure([], require => {
         cb(null, require('../Component/Users').default)
@@ -59,6 +65,7 @@ const RouteConfig = (
       <Route path="files" getComponent={ Files } />
       <Route path="file/edit(/:id)" getComponent={ FileEdit } />
       <Route path="comments(/:topic_id)" getComponent={ Comments } />
+      <Route path="Issues" getComponent={ Issues } />
       <Route path="users" getComponent={ Users } />
       <Redirect from="*" to="/" />
     </Route>

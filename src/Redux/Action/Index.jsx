@@ -37,6 +37,12 @@ export const MenuList = [{
   className: 'iconfont icon-comment',
   classNameActive: 'iconfont icon-commentfill'
 }, {
+  key: 6,
+  name: '交流',
+  link: '/issues',
+  className: 'iconfont icon-question',
+  classNameActive: 'iconfont icon-questionfill'
+}, {
   key: 4,
   name: '用户',
   link: '/users',
