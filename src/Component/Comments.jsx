@@ -151,7 +151,7 @@ class Comments extends Component {
         <TopicIdInput initValue={this.props.params.topic_id} submitCallBack={topicId => this.submitCallBack(topicId)} />
         {(this.props.fetchInfo['CommentList'] || []).length > 0
           ? (this.props.fetchInfo['CommentList'] || []).map((comment, index) => {
-            return <CommentRow key={index} comment={comment} onDelete={id => this.deleteComment(id)} settingStatus={this.props.settingStatus}/>
+            return <CommentRow key={index} comment={comment} onDelete={id => this.deleteComment(id)}/>
           })
           : this.state.topicId ? <NoComment /> : null
         }
@@ -163,7 +163,6 @@ class Comments extends Component {
 
 Comments.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
-  settingStatus: PropTypes.bool.isRequired,
   currentFilters: PropTypes.array.isRequired,
   fetchInfo: PropTypes.object.isRequired
 };
@@ -171,7 +170,6 @@ Comments.propTypes = {
 function select(state) {
   return {
     sideBarStatus: state.sideBarToggle,
-    settingStatus: state.settingStatus,
     currentFilters: state.currentFilters,
     fetchInfo: state.requestDatas
   };

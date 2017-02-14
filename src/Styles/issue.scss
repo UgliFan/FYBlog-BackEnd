@@ -1,0 +1,185 @@
+@import "variable.scss";
+
+.issue-container {
+  padding-left: $sideBarWidth;
+  padding-top: $headerHeight;
+  transition: all $transSpace ease;
+  &.wide {
+    padding-left: 0;
+  }
+
+  .issue-row {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.26);
+    margin-bottom: 10px;
+    padding: 10px 10px 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .issue-title {
+      height: 30px;
+      width: 100%;
+      font-size: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      .issue-type {
+        display: inline-block;
+        height: 30px;
+        line-height: 22px;
+        padding: 4px 12px;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,.26);
+        margin-right: 10px;
+        color: $white;
+        border-radius: $borderRadius;
+        &.issue-ask {
+          background-color: $colorSuccess;
+        }
+        &.issue-optimize {
+          background-color: $colorWarning;
+        }
+        &.issue-bug {
+          background-color: $colorDanger;
+        }
+        &.issue-communicate {
+          background-color: $colorInfo;
+        }
+      }
+      .issue-date {
+        display: inline-block;
+        height: 30px;
+        line-height: 22px;
+        font-size: 14px;
+        padding: 4px;
+        float: right;
+      }
+      .issue-author {
+        display: inline-block;
+        height: 30px;
+        line-height: 22px;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 4px 12px;
+        float: right;
+      }
+      .issue-zan {
+        vertical-align: top;
+        display: inline-block;
+        height: 30px;
+        line-height: 22px;
+        padding: 4px 8px;
+        i {
+          margin-right: 5px;
+        }
+      }
+    }
+    .issue-content {
+      padding: 10px 20px;
+      font-size: 14px;
+      line-height: 20px;
+      color: $fontGrayer;
+    }
+    .issue-footer {
+      height: 40px;
+      white-space: nowrap;
+      overflow: hidden;
+      .issue-state {
+        vertical-align: top;
+        display: inline-block;
+        margin-top: 5px;
+        height: 30px;
+        line-height: 20px;
+        padding: 4px 8px;
+        border: 1px solid $gray;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: $borderRadius;
+        &.open {
+          color: $colorInfo;
+        }
+        &.solve {
+          color: $colorSuccess;
+        }
+        &.close {
+          color: $fontGrayst;
+        }
+      }
+      .issue-close {
+        vertical-align: top;
+        display: inline-block;
+        margin-top: 5px;
+        height: 30px;
+        line-height: 22px;
+        padding: 4px 8px;
+        font-size: 16px;
+        border-radius: $borderRadius;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,.26);
+        color: $colorWarning;
+        margin-left: 10px;
+      }
+      .issue-delete {
+        vertical-align: top;
+        display: inline-block;
+        margin-top: 5px;
+        height: 30px;
+        line-height: 22px;
+        padding: 4px 8px;
+        font-size: 16px;
+        border-radius: $borderRadius;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,.26);
+        color: $colorDanger;
+        margin-left: 5px;
+      }
+      .issue-reply {
+        vertical-align: top;
+        display: inline-block;
+        height: 40px;
+        line-height: 32px;
+        padding: 4px 12px;
+        float: right;
+        i {
+          margin-right: 5px;
+        }
+      }
+    }
+    .issue-reply-list {
+      width: 100%;
+      &.open {
+        display: block;
+      }
+      &.close {
+        display: none;
+      }
+      .reply-row {
+        padding: 5px 20px;
+        border-bottom: 1px solid $gray;
+        &:last-child {
+          border-bottom: none;
+        }
+        .reply-title {
+          height: 30px;
+          line-height: 30px;
+          .reply-name {
+            vertical-align: top;
+            font-size: 14px;
+            font-weight: 700;
+            color: $black;
+          }
+          .reply-date {
+            vertical-align: top;
+            font-size: 14px;
+            color: $fontGrayer;
+            margin-left: 20px;
+          }
+        }
+        .reply-content {
+          padding: 5px 0 5px 20px;
+          line-height: 20px;
+          font-size: 14px;
+          color: $fontGrayst;
+        }
+      }
+    }
+  }
+}

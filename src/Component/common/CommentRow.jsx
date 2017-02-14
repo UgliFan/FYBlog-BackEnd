@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
 import { Tool } from '../../Libs/Tool'
 
 export default class CommentRow extends Component {
   render() {
-    const { comment, settingStatus } = this.props;
+    const { comment } = this.props;
     return (
-      <div className={'comment-row' + (settingStatus ? ' hover' : '')}>
+      <div className='comment-row'>
         <div className='comment-author'>
           { comment.icon ? <img src={comment.icon} /> : <div className='default-img'><i className='iconfont icon-people'></i></div> }
           <p className='author-name'>{ comment.author }</p>
@@ -25,6 +24,5 @@ export default class CommentRow extends Component {
 
 CommentRow.propTypes = {
   comment: PropTypes.object.isRequired,
-  settingStatus: PropTypes.bool.isRequired,
   onDelete: PropTypes.func.isRequired
 };
