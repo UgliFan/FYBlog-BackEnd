@@ -63,8 +63,8 @@ router.post('/new', filters.crossOrigin, function(req, res, next) {
 router.post('/reply/:id', filters.crossOrigin, function(req, res, next) {
   var params = {
     content: req.body.content,
-    author: req.body.author,
-    create_at: new Date().getTime()
+    name: req.body.author,
+    reply_at: new Date().getTime()
   };
   IssueDao.replyIssue(req.params.id, params).then(function(groups) {
     res.status(200).json({ code: 0, result: groups });
